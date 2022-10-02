@@ -1,0 +1,23 @@
+.menu {
+    display: flex;
+    margin: 0;
+    list-style: none;
+    gap: 15px;
+
+    &__link {
+        color: #3e3e3e;
+        font-size: 22px;
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+            color: #e62828;
+        }
+
+        &--active {
+            border-bottom: 2px solid #3e3e3e;
+        }
+    }
+  
+}
+  
