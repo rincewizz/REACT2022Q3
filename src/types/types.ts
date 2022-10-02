@@ -4,6 +4,9 @@ export interface ICard {
   title: string;
   desc: string;
 }
+export type SearchState = {
+  searchQuery: string;
+};
 
 export type MenuProp = {
   className?: string;
