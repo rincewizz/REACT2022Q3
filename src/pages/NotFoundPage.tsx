@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageProps } from 'types/types';
 
-export default class NotFound extends React.Component<PageProps> {
+export default class NotFoundPage extends React.Component<PageProps> {
   public static defaultProps = {
     title: '',
   };

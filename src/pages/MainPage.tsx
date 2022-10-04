@@ -3,7 +3,7 @@ import Search from 'components/Search/Search';
 import React from 'react';
 import { PageProps } from 'types/types';
 
-export default class Main extends React.Component<PageProps> {
+export default class MainPage extends React.Component<PageProps> {
   public static defaultProps = {
     title: '',
   };

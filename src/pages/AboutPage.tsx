@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageProps } from 'types/types';
 
-export default class About extends React.Component<PageProps> {
+export default class AboutPage extends React.Component<PageProps> {
   public static defaultProps = {
     title: '',
   };

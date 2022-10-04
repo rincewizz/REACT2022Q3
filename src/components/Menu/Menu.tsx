@@ -20,6 +20,11 @@ export default class Menu extends React.Component<MenuProp> {
           </NavLink>
         </li>
         <li className={styles.menu__item}>
+          <NavLink data-testid="form-link" className={this.navCssClasses} to="/form">
+            Form
+          </NavLink>
+        </li>
+        <li className={styles.menu__item}>
           <NavLink data-testid="about-link" className={this.navCssClasses} to="/about">
             About us
           </NavLink>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import Search from './Search';
-import Main from 'pages/Main';
+import MainPage from 'pages/MainPage';
 import userEvent from '@testing-library/user-event';
 
 describe('Search', () => {
@@ -25,7 +25,7 @@ describe('Search', () => {
   }
 
   it('should render the search', () => {
-    const { getByTestId } = render(<Main />);
+    const { getByTestId } = render(<MainPage />);
     const search = getByTestId('search');
 
     expect(search).toBeInTheDocument();
