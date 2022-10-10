@@ -1,0 +1,57 @@
+.form {
+    display: flex;
+    flex-direction: column;
+
+    &__label {
+        margin-top: 10px;
+    }
+    &__field {
+        width: 100%;
+        height: 50px;
+        border-radius: 5px;
+        box-shadow: none;
+        border: 1px solid #ced6e0;
+        transition: all 0.3s ease-in-out;
+        font-size: 18px;
+        padding: 5px 15px;
+        background: none;
+        color: #1a3b5d;
+        box-sizing: border-box;
+    }
+
+    &__switcher-field {
+        display: flex;
+    }
+    &__switcher-element {
+        display: none
+    }
+    &__switcher-label {
+        background-color: #e4e4e4;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 14px;
+        line-height: 1;
+        text-align: center;
+        padding: 8px 16px;
+        margin-right: -1px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 3px rgb(0 0 0 / 30%), 0 1px rgb(255 255 255 / 10%);
+        transition: all 0.1s ease-in-out;
+    }
+
+    &__switcher-element:checked + &__switcher-label {
+        background-color: #a5dc86;
+        box-shadow: none;
+    }
+
+    &__error {
+        color: red;
+        min-height: 22px;
+    }
+
+    &__button {
+        padding: 10px;
+    }
+    &__button-wrap {
+        text-align: center;
+    }
+}
