@@ -14,6 +14,7 @@ export default class Form extends React.Component<FormProp, FormState> {
   receiveNotificationsField: React.RefObject<InputControl>;
   fileField: React.RefObject<InputControl>;
   submitButton: React.RefObject<ButtonControl>;
+  saveMessage: React.RefObject<HTMLDivElement>;
 
   constructor(props: FormProp) {
     super(props);
@@ -25,6 +26,7 @@ export default class Form extends React.Component<FormProp, FormState> {
     this.receiveNotificationsField = createRef();
     this.fileField = createRef();
     this.submitButton = createRef();
+    this.saveMessage = createRef();
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -116,6 +118,14 @@ export default class Form extends React.Component<FormProp, FormState> {
     }, this.disableButton);
   }
 
+  showMessage() {
+    this.saveMessage.current?.classList.add(styles['form__save-message--show']);
+    setTimeout(
+      () => this.saveMessage.current?.classList.remove(styles['form__save-message--show']),
+      2000
+    );
+  }
+
   handleSubmit(event: FormEvent) {
     event.preventDefault();
 
@@ -136,6 +146,7 @@ export default class Form extends React.Component<FormProp, FormState> {
         img: img,
       });
       this.clearForm();
+      this.showMessage();
     } else {
       this.setState((prevState) => {
         return { ...prevState, isError: true };
@@ -167,6 +178,7 @@ export default class Form extends React.Component<FormProp, FormState> {
       agreeField,
       receiveNotificationsField,
       fileField,
+      saveMessage,
     } = this;
     return (
       <form action="" className={styles.form} ref={form} onSubmit={this.handleSubmit}>
@@ -241,6 +253,10 @@ export default class Form extends React.Component<FormProp, FormState> {
           <ButtonControl type="submit" ref={this.submitButton} className={styles.form__button}>
             Create Card
           </ButtonControl>
+        </div>
+
+        <div className={styles['form__save-message']} ref={saveMessage}>
+          Data has been saved
         </div>
       </form>
     );

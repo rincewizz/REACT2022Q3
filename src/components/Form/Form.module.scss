@@ -50,8 +50,26 @@
 
     &__button {
         padding: 10px;
+        margin-bottom: 10px;
     }
     &__button-wrap {
         text-align: center;
+    }
+    &__save-message {
+        color: #0f5132;
+        background-color: #d1e7dd;
+        border-color: #badbcc;
+        padding: 10px 10px;
+        margin-bottom: 10px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s;
+
+        &--show {
+            visibility: visible;
+            opacity: 1;
+        }
     }
 }
