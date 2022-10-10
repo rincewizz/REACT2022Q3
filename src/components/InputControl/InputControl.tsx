@@ -63,6 +63,7 @@ export default class InputControl extends React.Component<InputControlProps> {
               onChange={this.change}
               ref={this.input}
               value="yes"
+              data-testid={`input-switcher-yes-${name}`}
             />
             <label htmlFor={id + '_yes'} className={styles['form__switcher-label']}>
               Yes
@@ -75,6 +76,7 @@ export default class InputControl extends React.Component<InputControlProps> {
               onChange={this.change}
               ref={this.input}
               value="no"
+              data-testid={`input-switcher-no-${name}`}
             />
             <label htmlFor={id + '_no'} className={styles['form__switcher-label']}>
               No
@@ -93,9 +95,10 @@ export default class InputControl extends React.Component<InputControlProps> {
             className={className}
             onChange={this.change}
             ref={this.input}
+            data-testid={`input-${name}`}
           />
           {description}
-          <div className={styles.form__error} ref={this.error}></div>
+          <div className={styles.form__error} ref={this.error} data-testid={`error-${name}`}></div>
         </div>
       );
     }

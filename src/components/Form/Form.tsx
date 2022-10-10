@@ -58,30 +58,26 @@ export default class Form extends React.Component<FormProp, FormState> {
     const isNameValid =
       this.nameField.current?.validate((value: string | boolean) => {
         if (typeof value !== 'string') return;
-        if (value.length < 2) return 'Name should be more than 3 letters';
+        if (value.length < 2) return 'Name should be more than 1 letters';
         if (value.search(/^[a-zA-Z]+$/g) === -1) return 'Name should contain only alphabets';
-        return '';
       }) ?? false;
 
     const isDateValid =
       this.dateField.current?.validate((value: string | boolean) => {
         if (typeof value !== 'string') return;
         if (!value.length) return 'Date is required';
-        return '';
       }) ?? false;
 
     const isAgreeValid =
       this.agreeField.current?.validate((value: string | boolean) => {
         if (typeof value !== 'boolean') return;
         if (!value) return 'You should agree';
-        return '';
       }) ?? false;
 
     const isReceiveNotificationsValid =
       this.receiveNotificationsField.current?.validate((value: string | boolean) => {
         if (typeof value !== 'string') return;
         if (!value) return 'You should choose answer';
-        return '';
       }) ?? false;
 
     const isFileValid =
@@ -181,7 +177,13 @@ export default class Form extends React.Component<FormProp, FormState> {
       saveMessage,
     } = this;
     return (
-      <form action="" className={styles.form} ref={form} onSubmit={this.handleSubmit}>
+      <form
+        action=""
+        className={styles.form}
+        ref={form}
+        onSubmit={this.handleSubmit}
+        data-testid="form"
+      >
         <label htmlFor="" className={styles.form__label}>
           Name:
           <InputControl

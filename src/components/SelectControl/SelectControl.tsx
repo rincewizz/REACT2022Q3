@@ -20,7 +20,13 @@ export default class SelectControl extends React.Component<SelectControlProps> {
     const { name, id, className } = this.props;
     return (
       <div>
-        <select name={name} id={id} className={className} ref={this.input}>
+        <select
+          name={name}
+          id={id}
+          className={className}
+          ref={this.input}
+          data-testid={`select-${name}`}
+        >
           {this.props.children}
         </select>
         <div className="error" ref={this.error}></div>

@@ -16,7 +16,14 @@ export default class ButtonControl extends React.Component<ButtonControlProps> {
   render() {
     const { type, id, className, children } = this.props;
     return (
-      <button type={type} id={id} className={className} ref={this.button} disabled>
+      <button
+        type={type}
+        id={id}
+        className={className}
+        ref={this.button}
+        disabled
+        data-testid="submit"
+      >
         {children}
       </button>
     );
