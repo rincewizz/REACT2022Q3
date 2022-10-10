@@ -7,14 +7,14 @@ import cards from '../../data/cards.json';
 
 describe('CardsList', () => {
   it('should render the CardsList', () => {
-    const { getByTestId } = render(<CardsList />);
+    const { getByTestId } = render(<CardsList cards={cards} />);
     const cardsList = getByTestId('cards-list');
 
     expect(cardsList).toBeInTheDocument();
   });
 
   it('should render all cards', () => {
-    const { getAllByTestId } = render(<CardsList />);
+    const { getAllByTestId } = render(<CardsList cards={cards} />);
     const count = cards.length;
 
     expect(getAllByTestId('card').length).toEqual(count);

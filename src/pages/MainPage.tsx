@@ -2,6 +2,7 @@ import CardsList from 'components/Cards/CardsList';
 import Search from 'components/Search/Search';
 import React from 'react';
 import { PageProps } from 'types/types';
+import cards from '../data/cards.json';
 
 export default class MainPage extends React.Component<PageProps> {
   public static defaultProps = {
@@ -17,7 +18,7 @@ export default class MainPage extends React.Component<PageProps> {
           Home
         </h1>
         <Search />
-        <CardsList />
+        <CardsList cards={cards} />
       </div>
     );
   }

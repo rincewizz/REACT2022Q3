@@ -1,14 +1,14 @@
 import React from 'react';
-import cards from '../../data/cards.json';
+import { CardListProp } from 'types/types';
 import Card from './Card';
 import styles from './Cards.module.scss';
 
-export default class CardsList extends React.Component {
+export default class CardsList extends React.Component<CardListProp> {
   render() {
     return (
       <div className={styles.cards} data-testid="cards-list">
-        {cards.map((card) => (
-          <Card key={card.id} {...card} />
+        {this.props.cards.map((card, index) => (
+          <Card key={card.id || index} {...card} />
         ))}
       </div>
     );
