@@ -138,8 +138,8 @@ export default class Form extends React.Component<FormProp, FormState> {
         date: String(this.dateField.current?.value),
         agree: String(this.agreeField.current?.value),
         receiveNotifications: String(this.receiveNotificationsField.current?.value),
-        country: this.countryField.current?.value,
-        img: img,
+        country: String(this.countryField.current?.value),
+        img: String(img),
       });
       this.clearForm();
       this.showMessage();

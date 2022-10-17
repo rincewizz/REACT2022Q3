@@ -25,7 +25,7 @@ export default class FormPage extends React.Component<PageProps, FormPageState> 
           Form
         </h1>
         <Form createCard={this.createCard} />
-        <CardsList cards={this.state.cards} />
+        {!!this.state.cards.length && <CardsList cards={this.state.cards} />}
       </div>
     );
   }

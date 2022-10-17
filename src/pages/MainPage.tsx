@@ -47,7 +47,7 @@ export default class MainPage extends React.Component<PageProps, MainPageState> 
         <Search search={this.search} />
         {error && <Notification type="error">{error}</Notification>}
         {isLoading && !this.state.error && <Loader />}
-        {!error && !isLoading && <CardsList cards={this.state.cards} />}
+        {!error && !isLoading && <CardsList cards={this.state.cards} placeholder={placeholder} />}
       </div>
     );
   }
