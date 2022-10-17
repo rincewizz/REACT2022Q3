@@ -32,29 +32,29 @@ describe('Search', () => {
   });
 
   it('should render input value empty if Local storage empty', () => {
-    const { getByDisplayValue } = render(<Search />);
+    const { getByDisplayValue } = render(<Search search={() => {}} />);
     expect(getByDisplayValue('')).toBeInTheDocument();
   });
 
   it('should render input value if Local storage not empty', () => {
     localStorage = new LocalStorageMock();
-    const { rerender, getByDisplayValue } = render(<Search />);
+    const { rerender, getByDisplayValue } = render(<Search search={() => {}} />);
 
     userEvent.type(getByDisplayValue(''), 'text');
 
-    rerender(<Search />);
+    rerender(<Search search={() => {}} />);
 
     expect(getByDisplayValue('text')).toBeInTheDocument();
   });
 
   it('should save input value after reload page', () => {
     localStorage = new LocalStorageMock();
-    const { rerender, getByDisplayValue, getByTestId } = render(<Search />);
+    const { rerender, getByDisplayValue, getByTestId } = render(<Search search={() => {}} />);
     const search = getByTestId('search');
     userEvent.type(search, 'text');
 
     dispatchEvent(new Event('beforeunload'));
-    rerender(<Search />);
+    rerender(<Search search={() => {}} />);
 
     expect(getByDisplayValue('text')).toBeInTheDocument();
   });

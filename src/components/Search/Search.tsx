@@ -45,6 +45,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
       >
         <input
           className={styles.search__input}
+          data-testid="search-input"
           onInput={(e) => {
             this.handleInput(e);
           }}
@@ -52,7 +53,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
           type="search"
           ref={this.searchInput}
         />
-        <button type="submit" className={styles.search__button}>
+        <button type="submit" className={styles.search__button} data-testid="search-button">
           🔎
         </button>
       </form>
