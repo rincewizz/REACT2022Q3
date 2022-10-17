@@ -3,7 +3,8 @@ import SelectControl from 'components/SelectControl/SelectControl';
 import React from 'react';
 
 export interface ICard {
-  id?: number;
+  id?: number | string;
+  _id?: string;
   img?: string;
   title?: string;
   desc?: string;
@@ -12,9 +13,25 @@ export interface ICard {
   agree?: string;
   country?: string;
   receiveNotifications?: string;
+  race?: string;
+  gender?: string;
+  wikiUrl?: string;
+  hair?: string;
+  birth?: string;
+  death?: string;
+  height?: string;
+  realm?: string;
+  spouse?: string;
 }
+export type CardState = {
+  isModalOpen: boolean;
+};
 export type CardListProp = {
   cards: ICard[];
+  placeholder?: string;
+};
+export type SearchProps = {
+  search: (query: string) => void;
 };
 export type SearchState = {
   searchQuery: string;
@@ -25,6 +42,11 @@ export type MenuProp = {
 };
 export type PageProps = {
   title: string;
+};
+export type MainPageState = {
+  cards: ICard[];
+  isLoading: boolean;
+  error: string;
 };
 export type FormPageState = {
   cards: ICard[];
