@@ -2,6 +2,8 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import MainPage from 'pages/MainPage';
 import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
+import { getMockFetch } from 'tests/utils/mockFetch';
 
 const results = {
   docs: [
@@ -67,16 +69,11 @@ const results = {
 
 describe('Main page', () => {
   it('should find and show card', async () => {
-    window.fetch = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(results),
-      })
-    );
+    window.fetch = getMockFetch({ data: results });
 
-    const { getByTestId } = render(<MainPage />);
-    const search = getByTestId('search-input');
-    const button = getByTestId('search-button');
+    render(<MainPage />);
+    const search = screen.getByTestId('search-input');
+    const button = screen.getByTestId('search-button');
 
     userEvent.type(search, 'frodo baggins');
     fireEvent.click(button);
@@ -85,16 +82,11 @@ describe('Main page', () => {
   });
 
   it('should show message if not found', async () => {
-    window.fetch = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ docs: [] }),
-      })
-    );
+    window.fetch = getMockFetch({ data: { docs: [] } });
 
-    const { getByTestId } = render(<MainPage />);
-    const search = getByTestId('search-input');
-    const button = getByTestId('search-button');
+    render(<MainPage />);
+    const search = screen.getByTestId('search-input');
+    const button = screen.getByTestId('search-button');
 
     userEvent.type(search, 'qwerty');
     fireEvent.click(button);
@@ -103,15 +95,11 @@ describe('Main page', () => {
   });
 
   it('should show loader', async () => {
-    window.fetch = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(results),
-      })
-    );
-    const { getByTestId } = render(<MainPage />);
-    const search = getByTestId('search-input');
-    const button = getByTestId('search-button');
+    window.fetch = getMockFetch({ data: results });
+
+    render(<MainPage />);
+    const search = screen.getByTestId('search-input');
+    const button = screen.getByTestId('search-button');
 
     userEvent.type(search, 'frodo');
     fireEvent.click(button);
