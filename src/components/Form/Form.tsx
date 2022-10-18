@@ -2,8 +2,8 @@ import ButtonControl from 'components/ButtonControl/ButtonControl';
 import InputControl from 'components/InputControl/InputControl';
 import SelectControl from 'components/SelectControl/SelectControl';
 import React, { createRef, FormEvent } from 'react';
-import { FormProp, FormState } from 'types/types';
 import styles from './Form.module.scss';
+import { FormProp, FormState } from './types';
 
 export default class Form extends React.Component<FormProp, FormState> {
   form: React.RefObject<HTMLFormElement>;
@@ -59,7 +59,7 @@ export default class Form extends React.Component<FormProp, FormState> {
       this.nameField.current?.validate((value: string | boolean) => {
         if (typeof value !== 'string') return;
         if (value.length < 2) return 'Name should be more than 1 letters';
-        if (value.search(/^[a-zA-Z]+$/g) === -1) return 'Name should contain only alphabets';
+        if (value.search(/^[a-zA-Zа-яА-ЯЁ]+$/g) === -1) return 'Name should contain only alphabets';
       }) ?? false;
 
     const isDateValid =
@@ -177,36 +177,28 @@ export default class Form extends React.Component<FormProp, FormState> {
       saveMessage,
     } = this;
     return (
-      <form
-        action=""
-        className={styles.form}
-        ref={form}
-        onSubmit={this.handleSubmit}
-        data-testid="form"
-      >
-        <label htmlFor="" className={styles.form__label}>
+      <form className={styles.form} ref={form} onSubmit={this.handleSubmit} data-testid="form">
+        <label className={styles.form__label}>
           Name:
           <InputControl
             type="text"
             ref={nameField}
             name="name"
-            id=""
             className={styles.form__field}
             onChangeInputControll={this.handleChange}
           />
         </label>
-        <label htmlFor="" className={styles.form__label}>
+        <label className={styles.form__label}>
           Birthday:
           <InputControl
             type="date"
             ref={dateField}
             name="date"
-            id=""
             className={styles.form__field}
             onChangeInputControll={this.handleChange}
           />
         </label>
-        <label htmlFor="" className={styles.form__label}>
+        <label className={styles.form__label}>
           Country:
           <SelectControl
             name="country"
@@ -223,29 +215,27 @@ export default class Form extends React.Component<FormProp, FormState> {
             type="checkbox"
             ref={agreeField}
             name="agree"
-            id=""
+            id="agree"
             onChangeInputControll={this.handleChange}
             description="Agree to data processing"
           />
         </label>
-        <label htmlFor="" className={styles.form__label}>
+        <label className={styles.form__label}>
           I want to receive notifications about promo:
           <InputControl
             type="switcher"
             ref={receiveNotificationsField}
             name="receiveNotifications"
-            id=""
             className={styles.form__field}
             onChangeInputControll={this.handleChange}
           />
         </label>
-        <label htmlFor="" className={styles.form__label}>
+        <label className={styles.form__label}>
           File upload :
           <InputControl
             type="file"
             ref={fileField}
             name="file"
-            id=""
             className={styles.form__field}
             onChangeInputControll={this.handleChange}
           />

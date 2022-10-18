@@ -1,33 +1,34 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import App from '../../App';
-import { BrowserRouter } from 'react-router-dom';
+import '@testing-library/jest-dom/extend-expect';
+import { renderWithRouter } from 'tests/utils/renderWithRouter';
 
 describe('Menu', () => {
   it('should render the menu', () => {
-    const { container, getByTestId } = render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
-    const homeLink = getByTestId('home-link');
-    const aboutLink = getByTestId('about-link');
+    renderWithRouter(<App />);
+    const homeLink = screen.getByTestId('home-link');
+    const aboutLink = screen.getByTestId('about-link');
 
-    expect(container).toContainElement(homeLink);
-    expect(container).toContainElement(aboutLink);
+    expect(homeLink).toBeInTheDocument();
+    expect(aboutLink).toBeInTheDocument();
   });
 
-  it('show active link ', () => {
-    const { getByTestId } = render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
-    const homeLink = getByTestId('home-link');
-    const aboutLink = getByTestId('about-link');
-    fireEvent.click(getByTestId('home-link'));
+  it('show active home link ', () => {
+    renderWithRouter(<App />);
+    const homeLink = screen.getByTestId('home-link');
+
+    fireEvent.click(screen.getByTestId('home-link'));
+
     expect(homeLink).toHaveClass('menu__link--active');
-    fireEvent.click(getByTestId('about-link'));
+  });
+
+  it('show active about link ', () => {
+    renderWithRouter(<App />);
+    const aboutLink = screen.getByTestId('about-link');
+
+    fireEvent.click(screen.getByTestId('about-link'));
+
     expect(aboutLink).toHaveClass('menu__link--active');
   });
 });

@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { ButtonControlProps } from 'types/types';
+import { ButtonControlProps } from './types';
 
 export default class ButtonControl extends React.Component<ButtonControlProps> {
   button: React.RefObject<HTMLButtonElement>;

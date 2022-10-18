@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { SelectControlProps } from 'types/types';
+import { SelectControlProps } from './types';
 
 export default class SelectControl extends React.Component<SelectControlProps> {
   input: React.RefObject<HTMLSelectElement>;

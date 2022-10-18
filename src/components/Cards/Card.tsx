@@ -1,6 +1,6 @@
 import { Modal } from 'components/Modal/Modal';
 import React from 'react';
-import { CardState, ICard } from 'types/types';
+import { CardState, ICard } from './types';
 import styles from './Cards.module.scss';
 
 export default class Card extends React.Component<ICard, CardState> {
