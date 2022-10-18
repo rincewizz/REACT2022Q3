@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { InputControlProps } from 'types/types';
+import { InputControlProps } from './types';
 import styles from '../Form/Form.module.scss';
 
 export default class InputControl extends React.Component<InputControlProps> {
@@ -30,17 +30,17 @@ export default class InputControl extends React.Component<InputControlProps> {
       this.props.onChangeInputControll(this);
     }
   }
-  validate(fn: (value: string | boolean) => string | undefined): boolean {
+  validate(validationCallback: (value: string | boolean) => string | undefined): boolean {
     if (this.input.current && this.error.current) {
       let errorMsg;
       if (this.props.type === 'checkbox') {
-        errorMsg = fn(this.input.current.checked);
+        errorMsg = validationCallback(this.input.current.checked);
       } else if (this.props.type === 'switcher') {
-        errorMsg = fn(this.value ?? '');
+        errorMsg = validationCallback(this.value ?? '');
       } else if (this.props.type === 'file') {
-        errorMsg = fn(!!this.input.current.files?.length);
+        errorMsg = validationCallback(!!this.input.current.files?.length);
       } else {
-        errorMsg = fn(this.input.current.value);
+        errorMsg = validationCallback(this.input.current.value);
       }
       this.error.current.innerText = errorMsg ?? '';
       if (!errorMsg) {

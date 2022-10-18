@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardListProp } from 'types/types';
+import { CardListProp } from './types';
 import Card from './Card';
 import styles from './Cards.module.scss';
 

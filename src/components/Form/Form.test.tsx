@@ -1,48 +1,55 @@
 import React from 'react';
-import { fireEvent, getByText, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Form from './Form';
 import userEvent from '@testing-library/user-event';
 import FormPage from 'pages/FormPage';
+import '@testing-library/jest-dom/extend-expect';
 
 describe('Form', () => {
   it('should render the Form', () => {
-    const { getByTestId } = render(<Form createCard={() => {}} />);
-    const form = getByTestId('form');
+    render(<Form createCard={() => {}} />);
+    const form = screen.getByTestId('form');
 
     expect(form).toBeInTheDocument();
   });
 
-  it('submit button should be disables on start', () => {
-    const { getByTestId } = render(<Form createCard={() => {}} />);
-    const submit = getByTestId('submit');
-    const input = getByTestId('input-name');
+  it('should disable button on start', () => {
+    render(<Form createCard={() => {}} />);
+    const submit = screen.getByTestId('submit');
     expect(submit).toBeDisabled();
+
+    const input = screen.getByTestId('input-name');
     userEvent.type(input, 'a');
+
     expect(submit).not.toBeDisabled();
   });
 
-  it('name should be more than 1 letter', async () => {
-    render(<FormPage />);
-    const submit = screen.getByTestId('submit');
-    const input = screen.getByTestId('input-name');
-    userEvent.type(input, 'q');
-    userEvent.click(submit);
+  describe('should show validation message', () => {
+    it('name should be more than 1 letter', async () => {
+      render(<FormPage />);
+      const submit = screen.getByTestId('submit');
+      const input = screen.getByTestId('input-name');
 
-    await setTimeout(() => {
-      expect(screen.getByText(/Name should be more than 1 letters/i)).toBeInTheDocument();
-    }, 0);
-  });
+      userEvent.type(input, 'q');
+      userEvent.click(submit);
 
-  it('name should contain only alphabets', async () => {
-    render(<FormPage />);
-    const submit = screen.getByTestId('submit');
-    const input = screen.getByTestId('input-name');
-    userEvent.type(input, '111');
-    userEvent.click(submit);
+      await setTimeout(() => {
+        expect(screen.getByText(/Name should be more than 1 letters/i)).toBeInTheDocument();
+      }, 0);
+    });
 
-    await setTimeout(() => {
-      expect(screen.getByText(/Name should contain only alphabets/i)).toBeInTheDocument();
-    }, 0);
+    it('name should contain only alphabets', async () => {
+      render(<FormPage />);
+      const submit = screen.getByTestId('submit');
+      const input = screen.getByTestId('input-name');
+
+      userEvent.type(input, '111');
+      userEvent.click(submit);
+
+      await setTimeout(() => {
+        expect(screen.getByText(/Name should contain only alphabets/i)).toBeInTheDocument();
+      }, 0);
+    });
   });
 
   it('create card after form send', async () => {

@@ -1,5 +1,5 @@
 import React, { FormEvent } from 'react';
-import { SearchState } from 'types/types';
+import { SearchState } from './types';
 import styles from './Search.module.scss';
 
 export default class Search extends React.Component<Record<string, unknown>, SearchState> {

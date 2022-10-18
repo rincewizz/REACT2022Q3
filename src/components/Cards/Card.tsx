@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICard } from 'types/types';
+import { ICard } from './types';
 import styles from './Cards.module.scss';
 
 export default class Card extends React.Component<ICard> {

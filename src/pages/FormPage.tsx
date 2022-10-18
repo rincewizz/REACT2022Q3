@@ -1,7 +1,8 @@
 import CardsList from 'components/Cards/CardsList';
+import { ICard } from 'components/Cards/types';
 import Form from 'components/Form/Form';
 import React from 'react';
-import { FormPageState, ICard, PageProps } from 'types/types';
+import { FormPageState, PageProps } from 'types/types';
 
 export default class FormPage extends React.Component<PageProps, FormPageState> {
   constructor(props: PageProps) {

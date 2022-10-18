@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { MenuProp } from 'types/types';
+import { MenuProp } from './types';
 import styles from './Menu.module.scss';
 
 export default class Menu extends React.Component<MenuProp> {

@@ -17,14 +17,18 @@ describe('Menu', () => {
   it('show active home link ', () => {
     renderWithRouter(<App />);
     const homeLink = screen.getByTestId('home-link');
+
     fireEvent.click(screen.getByTestId('home-link'));
+
     expect(homeLink).toHaveClass('menu__link--active');
   });
 
   it('show active about link ', () => {
     renderWithRouter(<App />);
     const aboutLink = screen.getByTestId('about-link');
+
     fireEvent.click(screen.getByTestId('about-link'));
+
     expect(aboutLink).toHaveClass('menu__link--active');
   });
 });

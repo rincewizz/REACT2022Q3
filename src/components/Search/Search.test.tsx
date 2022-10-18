@@ -16,6 +16,7 @@ describe('Search', () => {
 
   it('should render input value empty if Local storage empty', () => {
     render(<Search />);
+
     expect(screen.getByDisplayValue('')).toBeInTheDocument();
   });
 
@@ -34,8 +35,8 @@ describe('Search', () => {
     localStorage = new LocalStorageMock();
     const { rerender } = render(<Search />);
     const search = screen.getByTestId('search');
-    userEvent.type(search, 'text');
 
+    userEvent.type(search, 'text');
     dispatchEvent(new Event('beforeunload'));
     rerender(<Search />);
 

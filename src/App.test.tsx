@@ -9,6 +9,7 @@ describe('React Router', () => {
     renderWithRouter(<App />);
 
     const homePageTitle = screen.getByTestId('home-page');
+
     expect(homePageTitle.textContent).toMatch('Home');
     expect(homePageTitle).toBeInTheDocument();
   });
