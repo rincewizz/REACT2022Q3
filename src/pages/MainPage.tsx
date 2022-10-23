@@ -23,11 +23,12 @@ export default function MainPage(props: PageProps) {
     try {
       const cards = await theOneApi.getCharacters({ limit: '10', name });
       setCards(cards.docs);
-      setIsLoading(false);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -39,7 +40,9 @@ export default function MainPage(props: PageProps) {
       <Search search={search} />
       {error && <Notification type="error">{error}</Notification>}
       {isLoading && !error && <Loader />}
-      {!error && !isLoading && <CardsList cards={cards} placeholder={placeholder} />}
+      {!error && !isLoading && (
+        <CardsList cards={cards} placeholder={placeholder} openModal={props.openModal} />
+      )}
     </div>
   );
 }

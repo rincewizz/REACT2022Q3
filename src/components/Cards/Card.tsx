@@ -1,18 +1,8 @@
-import { Modal } from 'components/Modal/Modal';
-import React, { useState } from 'react';
+import React from 'react';
 import { ICard } from './types';
 import styles from './Cards.module.scss';
 
 export default function Card(props: ICard) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  function handleClick() {
-    setIsModalOpen(true);
-  }
-  function modalClose() {
-    setIsModalOpen(false);
-  }
-
   const {
     img,
     title,
@@ -32,6 +22,50 @@ export default function Card(props: ICard) {
     spouse,
     wikiUrl,
   } = props;
+
+  const modalContent = (
+    <>
+      <div>
+        <b>Name: </b> {name}
+      </div>
+      <div>
+        <b>Race: </b> {race}
+      </div>
+      <div>
+        <b>Gender: </b> {gender}
+      </div>
+      <div>
+        <b>Birth: </b> {birth}
+      </div>
+      <div>
+        <b>Death: </b> {death}
+      </div>
+      <div>
+        <b>Hair: </b> {hair}
+      </div>
+      <div>
+        <b>Height: </b> {height}
+      </div>
+      <div>
+        <b>Realm: </b> {realm}
+      </div>
+      <div>
+        <b>Spouse: </b> {spouse}
+      </div>
+      <div>
+        <b>Wiki: </b>
+        <a href={wikiUrl} target="_blank" rel="noopener noreferrer">
+          {wikiUrl}
+        </a>
+      </div>
+    </>
+  );
+
+  function handleClick() {
+    if (props.openModal) {
+      props.openModal(modalContent);
+    }
+  }
 
   return (
     <>
@@ -84,43 +118,6 @@ export default function Card(props: ICard) {
           )}
         </div>
       </div>
-      {isModalOpen && (
-        <Modal close={modalClose}>
-          <div>
-            <b>Name: </b> {name}
-          </div>
-          <div>
-            <b>Race: </b> {race}
-          </div>
-          <div>
-            <b>Gender: </b> {gender}
-          </div>
-          <div>
-            <b>Birth: </b> {birth}
-          </div>
-          <div>
-            <b>Death: </b> {death}
-          </div>
-          <div>
-            <b>Hair: </b> {hair}
-          </div>
-          <div>
-            <b>Height: </b> {height}
-          </div>
-          <div>
-            <b>Realm: </b> {realm}
-          </div>
-          <div>
-            <b>Spouse: </b> {spouse}
-          </div>
-          <div>
-            <b>Wiki: </b>{' '}
-            <a href={wikiUrl} target="_blank" rel="noopener noreferrer">
-              {wikiUrl}
-            </a>
-          </div>
-        </Modal>
-      )}
     </>
   );
 }

@@ -6,19 +6,16 @@ export default function Search(props: SearchProps) {
   const searchInput = useRef<HTMLInputElement>(null);
   const searchForm = useRef<HTMLFormElement>(null);
 
-  function saveToLocalStorage(query: string) {
-    localStorage.setItem('searchQuery', query);
+  function handleChange(e: FormEvent<HTMLInputElement>) {
+    const { value } = e.target as HTMLInputElement;
+    localStorage.setItem('searchQuery', value);
   }
 
   useEffect(() => {
-    window.addEventListener('beforeunload', () => {
-      if (searchInput.current) {
-        saveToLocalStorage(searchInput.current?.value ?? '');
-      }
-    });
     if (searchInput.current) {
-      searchInput.current.value = localStorage.getItem('searchQuery') ?? '';
-      props.search(searchInput.current.value);
+      const searchQuery = localStorage.getItem('searchQuery') ?? '';
+      searchInput.current.value = searchQuery;
+      props.search(searchQuery);
     }
   }, []);
 
@@ -26,7 +23,7 @@ export default function Search(props: SearchProps) {
     const instance = searchInput.current;
     return () => {
       if (instance) {
-        saveToLocalStorage(instance?.value ?? '');
+        localStorage.setItem('searchQuery', instance?.value ?? '');
       }
     };
   }, []);
@@ -35,7 +32,6 @@ export default function Search(props: SearchProps) {
     e.preventDefault();
     if (searchInput.current?.value) {
       props.search(searchInput.current.value);
-      saveToLocalStorage(searchInput.current.value);
     }
   }
 
@@ -47,6 +43,7 @@ export default function Search(props: SearchProps) {
         placeholder="Search..."
         type="search"
         ref={searchInput}
+        onChange={handleChange}
       />
       <button type="submit" className={styles.search__button} data-testid="search-button">
         🔎

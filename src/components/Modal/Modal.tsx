@@ -4,7 +4,7 @@ import styles from './Modal.module.scss';
 import { ModalProps } from './types';
 
 export function Modal(props: ModalProps) {
-  const el = document.getElementById('modal-root') as HTMLDivElement;
+  const el = document.body as HTMLElement;
 
   return ReactDOM.createPortal(
     <div className={styles.modal} onClick={props.close} data-testid="modal">

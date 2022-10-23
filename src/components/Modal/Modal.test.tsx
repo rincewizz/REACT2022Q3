@@ -27,7 +27,7 @@ test('modal should close after clicking on the cross button', () => {
 
   fireEvent.click(screen.getByText('✖'));
 
-  expect(handleClose).toHaveBeenCalledTimes(1);
+  expect(handleClose).toHaveBeenCalled();
 });
 
 test('modal should be closed by clicking on a page outside the modal window', () => {

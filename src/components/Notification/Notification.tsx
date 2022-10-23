@@ -3,5 +3,9 @@ import styles from './Notification.module.scss';
 import { NotificationProps } from './types';
 
 export default function Notification(props: NotificationProps) {
-  return <div className={styles[props.type]}>{props.children}</div>;
+  return (
+    <div className={`${styles.notification} ${styles['notification--' + props.type]}`}>
+      {props.children}
+    </div>
+  );
 }
