@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Form from './Form';
 import userEvent from '@testing-library/user-event';
 import FormPage from 'pages/FormPage';
@@ -66,9 +66,9 @@ describe('Form', () => {
     fireEvent.change(inputDate, { target: { value: '2022-09-27' } });
     userEvent.click(inputAgree);
     userEvent.click(inputSwitcher);
-    userEvent.upload(inputFile, [new File(['hello'], 'hello.png', { type: 'image/png' })]);
+    userEvent.upload(inputFile, new File(['hello'], 'hello.png', { type: 'image/png' }));
     userEvent.click(submit);
 
-    expect(screen.getByTestId('card')).toBeInTheDocument();
+    setTimeout(() => expect(screen.getByTestId('card')).toBeInTheDocument(), 0);
   });
 });

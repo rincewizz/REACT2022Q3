@@ -13,6 +13,7 @@ export default function InputControl(props: InputControlProps) {
           type={props.type}
           {...props.register(props.name, props.validationSchema)}
           className={props.type !== 'checkbox' ? styles.form__field : ''}
+          data-testid={`input-${props.name}`}
         />
         {props.type === 'checkbox' && props.label}
       </label>
