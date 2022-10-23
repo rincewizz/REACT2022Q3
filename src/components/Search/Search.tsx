@@ -1,38 +1,37 @@
 import React, { FormEvent } from 'react';
-import { SearchProps, SearchState } from './types';
+import { SearchProps } from './types';
 import styles from './Search.module.scss';
 
-export default class Search extends React.Component<SearchProps, SearchState> {
+export default class Search extends React.Component<SearchProps> {
   private searchInput: React.RefObject<HTMLInputElement>;
   private searchForm: React.RefObject<HTMLFormElement>;
 
   constructor(props: SearchProps) {
     super(props);
-    const searchQuery = localStorage.getItem('searchQuery');
-    this.state = { searchQuery: searchQuery ? searchQuery : '' };
-    this.handleInput = this.handleInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.searchInput = React.createRef<HTMLInputElement>();
     this.searchForm = React.createRef<HTMLFormElement>();
   }
 
-  handleInput(e: FormEvent<HTMLInputElement>) {
+  handleChange(e: FormEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
-    this.setState({ searchQuery: value });
+    localStorage.setItem('searchQuery', value);
   }
   componentDidMount(): void {
-    window.addEventListener('beforeunload', this.componentWillUnmount.bind(this));
-    this.props.search(this.state.searchQuery);
-    (this.searchInput.current as HTMLInputElement).value = this.state.searchQuery;
+    const searchQuery = localStorage.getItem('searchQuery') ?? '';
+    (this.searchInput.current as HTMLInputElement).value = searchQuery;
+    this.props.search(searchQuery);
   }
   componentWillUnmount() {
-    localStorage.setItem('searchQuery', this.state.searchQuery);
+    const { value } = this.searchInput.current as HTMLInputElement;
+    localStorage.setItem('searchQuery', value);
   }
 
   handleSearch(e: FormEvent) {
     e.preventDefault();
-    this.props.search(this.state.searchQuery);
-    localStorage.setItem('searchQuery', this.state.searchQuery);
+    const { value } = this.searchInput.current as HTMLInputElement;
+    this.props.search(value);
   }
 
   render() {
@@ -45,13 +44,13 @@ export default class Search extends React.Component<SearchProps, SearchState> {
       >
         <input
           className={styles.search__input}
-          data-testid="search-input"
           onInput={(e) => {
-            this.handleInput(e);
+            this.handleChange(e);
           }}
           placeholder="Search..."
           type="search"
           ref={this.searchInput}
+          data-testid="search-input"
         />
         <button type="submit" className={styles.search__button} data-testid="search-button">
           🔎

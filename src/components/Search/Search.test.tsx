@@ -9,7 +9,7 @@ import { LocalStorageMock } from 'tests/utils/localStorageMock';
 describe('Search', () => {
   it('should render the search', () => {
     render(<MainPage />);
-    const search = screen.getByTestId('search');
+    const search = screen.getByPlaceholderText('Search...');
 
     expect(search).toBeInTheDocument();
   });
@@ -37,7 +37,7 @@ describe('Search', () => {
     const search = screen.getByTestId('search');
 
     userEvent.type(search, 'text');
-    dispatchEvent(new Event('beforeunload'));
+
     rerender(<Search search={() => {}} />);
 
     expect(screen.getByDisplayValue('text')).toBeInTheDocument();

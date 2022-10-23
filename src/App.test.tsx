@@ -8,10 +8,9 @@ describe('React Router', () => {
   it('should render the home page', () => {
     renderWithRouter(<App />);
 
-    const homePageTitle = screen.getByTestId('home-page');
+    const homePageTitle = screen.getAllByText('Home');
 
-    expect(homePageTitle.textContent).toMatch('Home');
-    expect(homePageTitle).toBeInTheDocument();
+    expect(homePageTitle).toHaveLength(2);
   });
 
   it('should navigate to the about page', () => {
