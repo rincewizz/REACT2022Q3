@@ -6,22 +6,20 @@ export default class Search extends React.Component<Record<string, unknown>, Sea
   private searchInput = React.createRef<HTMLInputElement>();
   constructor(props: Record<string, unknown>) {
     super(props);
-    const searchQuery = localStorage.getItem('searchQuery');
-    this.state = { searchQuery: searchQuery ? searchQuery : '' };
-    this.handleInput = this.handleInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.searchInput = React.createRef<HTMLInputElement>();
   }
 
-  handleInput(e: FormEvent<HTMLInputElement>) {
+  handleChange(e: FormEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
-    this.setState({ searchQuery: value });
+    localStorage.setItem('searchQuery', value);
   }
   componentDidMount(): void {
-    window.addEventListener('beforeunload', this.componentWillUnmount.bind(this));
-    (this.searchInput.current as HTMLInputElement).value = this.state.searchQuery;
+    (this.searchInput.current as HTMLInputElement).value =
+      localStorage.getItem('searchQuery') ?? '';
   }
   componentWillUnmount() {
-    localStorage.setItem('searchQuery', this.state.searchQuery);
+    localStorage.setItem('searchQuery', localStorage.getItem('searchQuery') ?? '');
   }
 
   render() {
@@ -29,8 +27,8 @@ export default class Search extends React.Component<Record<string, unknown>, Sea
       <div className={styles.search} data-testid="search">
         <input
           className={styles.search__input}
-          onInput={(e) => {
-            this.handleInput(e);
+          onChange={(e) => {
+            this.handleChange(e);
           }}
           placeholder="Search..."
           type="text"
