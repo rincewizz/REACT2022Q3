@@ -19,9 +19,6 @@ export interface ICard {
   realm?: string;
   spouse?: string;
 }
-export type CardState = {
-  isModalOpen: boolean;
-};
 export type CardListProp = {
   cards: ICard[];
   placeholder?: string;

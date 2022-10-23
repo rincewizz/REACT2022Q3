@@ -1,54 +1,45 @@
 import CardsList from 'components/Cards/CardsList';
+import { ICard } from 'components/Cards/types';
 import Loader from 'components/Loader/Loader';
 import Notification from 'components/Notification/Notification';
 import Search from 'components/Search/Search';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { theOneApi } from 'services/theOneApi';
-import { MainPageState, PageProps } from 'types/types';
+import { PageProps } from 'types/types';
 import placeholder from '../assets/img/lord.jpg';
 
-export default class MainPage extends React.Component<PageProps, MainPageState> {
-  constructor(props: PageProps) {
-    super(props);
-    this.state = { cards: [], isLoading: false, error: '' };
-    this.search = this.search.bind(this);
-  }
-  public static defaultProps = {
-    title: '',
-  };
+export default function MainPage(props: PageProps) {
+  const [cards, setCards] = useState<ICard[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  async componentDidMount() {
-    document.title = this.props.title || '';
-  }
+  useEffect(() => {
+    document.title = props.title ?? '';
+  });
 
-  async search(name: string) {
-    this.setState({ isLoading: true });
+  async function search(name: string) {
+    setIsLoading(true);
 
     try {
       const cards = await theOneApi.getCharacters({ limit: '10', name });
-      this.setState({
-        cards: cards.docs,
-        isLoading: false,
-      });
+      setCards(cards.docs);
+      setIsLoading(false);
     } catch (error) {
       if (error instanceof Error) {
-        this.setState({ error: error.message });
+        setError(error.message);
       }
     }
   }
 
-  render() {
-    const { isLoading, error } = this.state;
-    return (
-      <div className="container">
-        <h1 className="title" data-testid="home-page">
-          Home
-        </h1>
-        <Search search={this.search} />
-        {error && <Notification type="error">{error}</Notification>}
-        {isLoading && !this.state.error && <Loader />}
-        {!error && !isLoading && <CardsList cards={this.state.cards} placeholder={placeholder} />}
-      </div>
-    );
-  }
+  return (
+    <div className="container">
+      <h1 className="title" data-testid="home-page">
+        Home
+      </h1>
+      <Search search={search} />
+      {error && <Notification type="error">{error}</Notification>}
+      {isLoading && !error && <Loader />}
+      {!error && !isLoading && <CardsList cards={cards} placeholder={placeholder} />}
+    </div>
+  );
 }

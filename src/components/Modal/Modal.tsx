@@ -3,28 +3,20 @@ import ReactDOM from 'react-dom';
 import styles from './Modal.module.scss';
 import { ModalProps } from './types';
 
-// const modalRoot: HTMLDivElement = document.getElementById('modal-root') as HTMLDivElement;
+export function Modal(props: ModalProps) {
+  const el = document.getElementById('modal-root') as HTMLDivElement;
 
-export class Modal extends React.Component<ModalProps> {
-  el: HTMLDivElement;
-  constructor(props: ModalProps) {
-    super(props);
-    this.el = document.getElementById('modal-root') as HTMLDivElement;
-  }
-
-  render() {
-    return ReactDOM.createPortal(
-      <div className={styles.modal} onClick={this.props.close} data-testid="modal">
-        <div className={styles.modal__window} onClick={(e) => e.stopPropagation()}>
-          <div className={styles['modal__title-bar']}>
-            <button className={styles.modal__close} onClick={this.props.close}>
-              ✖
-            </button>
-          </div>
-          <div className={styles['modal__window-contant']}>{this.props.children}</div>
+  return ReactDOM.createPortal(
+    <div className={styles.modal} onClick={props.close} data-testid="modal">
+      <div className={styles.modal__window} onClick={(e) => e.stopPropagation()}>
+        <div className={styles['modal__title-bar']}>
+          <button className={styles.modal__close} onClick={props.close}>
+            ✖
+          </button>
         </div>
-      </div>,
-      this.el
-    );
-  }
+        <div className={styles['modal__window-contant']}>{props.children}</div>
+      </div>
+    </div>,
+    el
+  );
 }

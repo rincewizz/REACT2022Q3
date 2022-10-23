@@ -1,18 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PageProps } from 'types/types';
 
-export default class NotFoundPage extends React.Component<PageProps> {
-  public static defaultProps = {
-    title: '',
-  };
-  componentDidMount() {
-    document.title = this.props.title;
-  }
-  render() {
-    return (
-      <div className="not-found">
-        <div className="not-found__text">Page not found</div>
-      </div>
-    );
-  }
+export default function NotFoundPage(props: PageProps) {
+  useEffect(() => {
+    document.title = props.title ?? '';
+  });
+
+  return (
+    <div className="not-found">
+      <div className="not-found__text">Page not found</div>
+    </div>
+  );
 }
