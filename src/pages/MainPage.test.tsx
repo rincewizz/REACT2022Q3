@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { getMockFetch } from 'tests/utils/mockFetch';
 
-const results = {
+const API_RESPONSE_MOCK = {
   docs: [
     {
       _id: '5cd99d4bde30eff6ebccfcf9',
@@ -69,7 +69,7 @@ const results = {
 
 describe('Main page', () => {
   it('should find and show card', async () => {
-    window.fetch = getMockFetch({ data: results });
+    window.fetch = getMockFetch({ data: API_RESPONSE_MOCK });
 
     render(<MainPage />);
     const search = screen.getByTestId('search-input');
@@ -95,7 +95,7 @@ describe('Main page', () => {
   });
 
   it('should show loader', async () => {
-    window.fetch = getMockFetch({ data: results });
+    window.fetch = getMockFetch({ data: API_RESPONSE_MOCK });
 
     render(<MainPage />);
     const search = screen.getByTestId('search-input');

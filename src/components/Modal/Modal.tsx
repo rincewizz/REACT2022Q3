@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import styles from './Modal.module.scss';
 import { ModalProps } from './types';
 
-// const modalRoot: HTMLDivElement = document.getElementById('modal-root') as HTMLDivElement;
-
 export class Modal extends React.Component<ModalProps> {
-  el: HTMLDivElement;
+  el: HTMLElement;
   constructor(props: ModalProps) {
     super(props);
-    this.el = document.getElementById('modal-root') as HTMLDivElement;
+    this.el = document.body;
   }
 
   render() {

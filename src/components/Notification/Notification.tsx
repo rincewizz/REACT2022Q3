@@ -4,6 +4,10 @@ import { NotificationProps } from './types';
 
 export default class Notification extends React.Component<NotificationProps> {
   render() {
-    return <div className={styles[this.props.type]}>{this.props.children}</div>;
+    return (
+      <div className={`${styles.notification} ${styles['notification--' + this.props.type]}`}>
+        {this.props.children}
+      </div>
+    );
   }
 }

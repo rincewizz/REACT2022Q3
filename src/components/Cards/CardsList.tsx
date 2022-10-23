@@ -9,12 +9,20 @@ export default class CardsList extends React.Component<CardListProp> {
   render() {
     return (
       <>
-        {!this.props.cards.length && <Notification type="message">nothing found</Notification>}
-        <div className={styles.cards} data-testid="cards-list">
-          {this.props.cards.map((card) => (
-            <Card key={card.id || card._id || uuidv4()} img={this.props.placeholder} {...card} />
-          ))}
-        </div>
+        {this.props.cards.length ? (
+          <div className={styles.cards} data-testid="cards-list">
+            {this.props.cards.map((card) => (
+              <Card
+                key={card.id || card._id || uuidv4()}
+                img={this.props.placeholder}
+                {...card}
+                openModal={this.props.openModal}
+              />
+            ))}
+          </div>
+        ) : (
+          <Notification type="message">nothing found</Notification>
+        )}
       </>
     );
   }

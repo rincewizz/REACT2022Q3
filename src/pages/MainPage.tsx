@@ -28,12 +28,15 @@ export default class MainPage extends React.Component<PageProps, MainPageState> 
       const cards = await theOneApi.getCharacters({ limit: '10', name });
       this.setState({
         cards: cards.docs,
-        isLoading: false,
       });
     } catch (error) {
       if (error instanceof Error) {
         this.setState({ error: error.message });
       }
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
     }
   }
 
@@ -47,7 +50,13 @@ export default class MainPage extends React.Component<PageProps, MainPageState> 
         <Search search={this.search} />
         {error && <Notification type="error">{error}</Notification>}
         {isLoading && !this.state.error && <Loader />}
-        {!error && !isLoading && <CardsList cards={this.state.cards} placeholder={placeholder} />}
+        {!error && !isLoading && (
+          <CardsList
+            cards={this.state.cards}
+            placeholder={placeholder}
+            openModal={this.props.openModal}
+          />
+        )}
       </div>
     );
   }

@@ -18,6 +18,7 @@ export interface ICard {
   height?: string;
   realm?: string;
   spouse?: string;
+  openModal?: (content: React.ReactNode) => void;
 }
 export type CardState = {
   isModalOpen: boolean;
@@ -25,4 +26,5 @@ export type CardState = {
 export type CardListProp = {
   cards: ICard[];
   placeholder?: string;
+  openModal?: (content: React.ReactNode) => void;
 };
