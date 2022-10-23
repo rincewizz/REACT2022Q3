@@ -1,36 +1,25 @@
-import React, { createRef } from 'react';
+import React from 'react';
+import styles from '../Form/Form.module.scss';
 import { SelectControlProps } from './types';
 
-export default class SelectControl extends React.Component<SelectControlProps> {
-  input: React.RefObject<HTMLSelectElement>;
-  error: React.RefObject<HTMLDivElement>;
-  _value: null | string;
-  constructor(props: SelectControlProps) {
-    super(props);
-    this.input = createRef();
-    this.error = createRef();
-    this._value = null;
-  }
-
-  get value() {
-    return this.input.current?.value;
-  }
-
-  render() {
-    const { name, id, className } = this.props;
-    return (
-      <div>
+export default function SelectControl(props: SelectControlProps) {
+  return (
+    <div className="form-control-input">
+      <label htmlFor={props.name}>
+        {props.label}
+        {props.required && '*'}
         <select
-          name={name}
-          id={id}
-          className={className}
-          ref={this.input}
-          data-testid={`select-${name}`}
+          id={props.name}
+          {...props.register(props.name, props.validationSchema)}
+          className={styles.form__field}
         >
-          {this.props.children}
+          {props.children}
         </select>
-        <div className="error" ref={this.error}></div>
-      </div>
-    );
-  }
+      </label>
+
+      {props.errors && (
+        <div className={styles.form__error}>{props.errors[props.name]?.message}</div>
+      )}
+    </div>
+  );
 }

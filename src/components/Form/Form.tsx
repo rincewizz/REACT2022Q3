@@ -1,256 +1,141 @@
 import ButtonControl from 'components/ButtonControl/ButtonControl';
 import InputControl from 'components/InputControl/InputControl';
-import SelectControl from 'components/SelectControl/SelectControl';
-import React, { createRef, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Form.module.scss';
-import { FormProp, FormState } from './types';
+import { FormProp } from './types';
+import { useForm, FieldValues } from 'react-hook-form';
+import SwitcherControl from 'components/SwitcherControl/SwitcherControl';
+import Notification from '../Notification/Notification';
+import SelectControl from 'components/SelectControl/SelectControl';
 
-export default class Form extends React.Component<FormProp, FormState> {
-  form: React.RefObject<HTMLFormElement>;
-  nameField: React.RefObject<InputControl>;
-  dateField: React.RefObject<InputControl>;
-  countryField: React.RefObject<SelectControl>;
-  agreeField: React.RefObject<InputControl>;
-  receiveNotificationsField: React.RefObject<InputControl>;
-  fileField: React.RefObject<InputControl>;
-  submitButton: React.RefObject<ButtonControl>;
-  saveMessage: React.RefObject<HTMLDivElement>;
+export default function Form(props: FormProp) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isDirty, isValid, isSubmitted, isSubmitSuccessful },
+  } = useForm({ mode: 'onSubmit', reValidateMode: 'onChange' });
 
-  constructor(props: FormProp) {
-    super(props);
-    this.form = createRef();
-    this.nameField = createRef();
-    this.dateField = createRef();
-    this.countryField = createRef();
-    this.agreeField = createRef();
-    this.receiveNotificationsField = createRef();
-    this.fileField = createRef();
-    this.submitButton = createRef();
-    this.saveMessage = createRef();
+  const [isShowMessage, setIsShowMessage] = useState(false);
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      isFirstChange: true,
-      isError: false,
-      valid: {
-        name: true,
-        date: true,
-        country: true,
-        agree: true,
-        receiveNotifications: true,
-        file: true,
-      },
-    };
-  }
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+      setValue('agree', '');
+      setIsShowMessage(true);
+      setTimeout(() => setIsShowMessage(false), 2000);
+    }
+  }, [isSubmitSuccessful]);
 
-  disableButton() {
-    const isValid =
-      this.state.valid.name &&
-      this.state.valid.date &&
-      this.state.valid.file &&
-      this.state.valid.agree &&
-      this.state.valid.receiveNotifications;
-    this.submitButton.current?.disable(!isValid || this.state.isFirstChange || this.state.isError);
-  }
-
-  formValidate(): boolean | undefined {
-    const isNameValid =
-      this.nameField.current?.validate((value: string | boolean) => {
-        if (typeof value !== 'string') return;
-        if (value.length < 2) return 'Name should be more than 1 letters';
-        if (value.search(/^[a-zA-Zа-яА-ЯЁ]+$/g) === -1) return 'Name should contain only alphabets';
-      }) ?? false;
-
-    const isDateValid =
-      this.dateField.current?.validate((value: string | boolean) => {
-        if (typeof value !== 'string') return;
-        if (!value.length) return 'Date is required';
-      }) ?? false;
-
-    const isAgreeValid =
-      this.agreeField.current?.validate((value: string | boolean) => {
-        if (typeof value !== 'boolean') return;
-        if (!value) return 'You should agree';
-      }) ?? false;
-
-    const isReceiveNotificationsValid =
-      this.receiveNotificationsField.current?.validate((value: string | boolean) => {
-        if (typeof value !== 'string') return;
-        if (!value) return 'You should choose answer';
-      }) ?? false;
-
-    const isFileValid =
-      this.fileField.current?.validate((value: string | boolean) => {
-        if (typeof value !== 'boolean') return;
-        if (!value) return 'You should choose image';
-      }) ?? false;
-
-    this.setState((prevState) => {
-      return {
-        valid: {
-          ...prevState.valid,
-          name: isNameValid,
-          date: isDateValid,
-          agree: isAgreeValid,
-          receiveNotifications: isReceiveNotificationsValid,
-          file: isFileValid,
-        },
-      };
+  const handleSuccess = (data: FieldValues) => {
+    props.createCard({
+      name: data.name,
+      date: data.date,
+      agree: data.agree ? 'on' : 'off',
+      receiveNotifications: data.receiveNotifications,
+      country: data.country,
+      img: URL.createObjectURL(data.file[0]),
     });
+  };
 
-    return isNameValid && isDateValid && isAgreeValid && isFileValid && isReceiveNotificationsValid;
-  }
+  const validationOptions = {
+    name: {
+      required: 'Name is required',
+      minLength: {
+        value: 2,
+        message: 'Name should be more than 1 letters',
+      },
+      pattern: {
+        value: /^[a-zA-Zа-яА-ЯЁ]+$/,
+        message: 'Name should contain only alphabets',
+      },
+    },
+    date: {
+      required: 'Date is required',
+    },
+    country: {
+      required: 'County is required',
+    },
+    agree: {
+      required: 'You should agree',
+    },
+    file: {
+      required: 'You should choose image',
+    },
+    receiveNotifications: {
+      required: 'You should choose answer',
+    },
+  };
 
-  clearForm() {
-    this.form.current?.reset();
+  return (
+    <form className={styles.form} onSubmit={handleSubmit(handleSuccess)} data-testid="form">
+      <InputControl
+        type="text"
+        name="name"
+        label="Name"
+        errors={errors}
+        register={register}
+        validationSchema={validationOptions.name}
+        required
+      />
+      <InputControl
+        type="date"
+        name="date"
+        label="Birthday"
+        errors={errors}
+        register={register}
+        validationSchema={validationOptions.date}
+        required
+      />
+      <SelectControl
+        name="country"
+        label="Country"
+        errors={errors}
+        register={register}
+        validationSchema={validationOptions.country}
+        required
+      >
+        <option value="USA">USA</option>
+        <option value="Belarus">Belarus</option>
+      </SelectControl>
+      <InputControl
+        type="checkbox"
+        name="agree"
+        label="Agree to data processing"
+        errors={errors}
+        register={register}
+        validationSchema={validationOptions.agree}
+        required
+      />
+      <SwitcherControl
+        name="receiveNotifications"
+        label="I want to receive notifications about promo"
+        errors={errors}
+        register={register}
+        validationSchema={validationOptions.receiveNotifications}
+        required
+      />
+      <InputControl
+        type="file"
+        name="file"
+        label="File upload"
+        errors={errors}
+        register={register}
+        validationSchema={validationOptions.file}
+        required
+      />
+      <div className={styles['form__button-wrap']}>
+        <ButtonControl
+          type="submit"
+          disabled={!isDirty || (isDirty && !isValid && isSubmitted)}
+          className={styles.form__button}
+        >
+          Create Card
+        </ButtonControl>
+      </div>
 
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-        isFirstChange: true,
-        isError: false,
-      };
-    }, this.disableButton);
-  }
-
-  showMessage() {
-    this.saveMessage.current?.classList.add(styles['form__save-message--show']);
-    setTimeout(
-      () => this.saveMessage.current?.classList.remove(styles['form__save-message--show']),
-      2000
-    );
-  }
-
-  handleSubmit(event: FormEvent) {
-    event.preventDefault();
-
-    if (this.formValidate()) {
-      this.setState((prevState) => {
-        return { ...prevState, isError: false };
-      }, this.disableButton);
-      let img;
-      if (this.fileField.current?.input.current?.files) {
-        img = URL.createObjectURL(this.fileField.current?.input.current?.files[0]);
-      }
-      this.props.createCard({
-        name: String(this.nameField.current?.value),
-        date: String(this.dateField.current?.value),
-        agree: String(this.agreeField.current?.value),
-        receiveNotifications: String(this.receiveNotificationsField.current?.value),
-        country: String(this.countryField.current?.value),
-        img: String(img),
-      });
-      this.clearForm();
-      this.showMessage();
-    } else {
-      this.setState((prevState) => {
-        return { ...prevState, isError: true };
-      }, this.disableButton);
-    }
-  }
-
-  handleChange(control: InputControl | SelectControl) {
-    const name = control.input.current?.name;
-
-    if (name) {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          isFirstChange: false,
-          isError: false,
-          valid: { ...prevState.valid, [name]: true },
-        };
-      }, this.disableButton);
-    }
-  }
-
-  render() {
-    const {
-      form,
-      nameField,
-      dateField,
-      countryField,
-      agreeField,
-      receiveNotificationsField,
-      fileField,
-      saveMessage,
-    } = this;
-    return (
-      <form className={styles.form} ref={form} onSubmit={this.handleSubmit} data-testid="form">
-        <label className={styles.form__label}>
-          Name:
-          <InputControl
-            type="text"
-            ref={nameField}
-            name="name"
-            className={styles.form__field}
-            onChangeInputControll={this.handleChange}
-          />
-        </label>
-        <label className={styles.form__label}>
-          Birthday:
-          <InputControl
-            type="date"
-            ref={dateField}
-            name="date"
-            className={styles.form__field}
-            onChangeInputControll={this.handleChange}
-          />
-        </label>
-        <label className={styles.form__label}>
-          Country:
-          <SelectControl
-            name="country"
-            onChangeInputControll={this.handleChange}
-            className={styles.form__field}
-            ref={countryField}
-          >
-            <option value="USA">USA</option>
-            <option value="Belarus">Belarus</option>
-          </SelectControl>
-        </label>
-        <label htmlFor="agree" className={styles.form__label}>
-          <InputControl
-            type="checkbox"
-            ref={agreeField}
-            name="agree"
-            id="agree"
-            onChangeInputControll={this.handleChange}
-            description="Agree to data processing"
-          />
-        </label>
-        <label className={styles.form__label}>
-          I want to receive notifications about promo:
-          <InputControl
-            type="switcher"
-            ref={receiveNotificationsField}
-            name="receiveNotifications"
-            className={styles.form__field}
-            onChangeInputControll={this.handleChange}
-          />
-        </label>
-        <label className={styles.form__label}>
-          File upload :
-          <InputControl
-            type="file"
-            ref={fileField}
-            name="file"
-            className={styles.form__field}
-            onChangeInputControll={this.handleChange}
-          />
-        </label>
-
-        <div className={styles['form__button-wrap']}>
-          <ButtonControl type="submit" ref={this.submitButton} className={styles.form__button}>
-            Create Card
-          </ButtonControl>
-        </div>
-
-        <div className={styles['form__save-message']} ref={saveMessage}>
-          Data has been saved
-        </div>
-      </form>
-    );
-  }
+      {isShowMessage && <Notification type="message">Data has been saved</Notification>}
+    </form>
+  );
 }

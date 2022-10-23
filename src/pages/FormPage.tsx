@@ -14,7 +14,7 @@ export default class FormPage extends React.Component<PageProps, FormPageState> 
     title: '',
   };
   componentDidMount() {
-    document.title = this.props.title;
+    document.title = this.props.title ?? '';
   }
   createCard(card: ICard) {
     this.setState({ cards: this.state.cards.concat([card]) });

@@ -6,4 +6,5 @@ export type ButtonControlProps = {
   id?: string;
   className?: string;
   children: React.ReactNode;
+  disabled: boolean;
 };

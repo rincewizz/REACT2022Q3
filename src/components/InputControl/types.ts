@@ -1,13 +1,13 @@
-import InputControl from './InputControl';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 export type InputType = 'text' | 'checkbox' | 'file' | 'radio' | 'date' | 'switcher';
 
 export type InputControlProps = {
-  type: InputType;
   name: string;
-  id?: string;
-  className?: string;
-  description?: string;
-  onChangeInputControll: (control: InputControl) => void;
-  changeHandler?: (event: React.ChangeEvent) => void;
+  label: string;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues | undefined;
+  required: boolean;
+  type: InputType;
+  validationSchema: FieldValues;
 };
