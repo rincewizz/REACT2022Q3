@@ -1,48 +1,44 @@
-import React, { FormEvent, useEffect, useRef } from 'react';
+import React, { FormEvent, useContext, useEffect } from 'react';
 import { SearchProps } from './types';
 import styles from './Search.module.scss';
+import { AppContext } from 'appState/appContext';
 
 export default function Search(props: SearchProps) {
-  const searchInput = useRef<HTMLInputElement>(null);
-  const searchForm = useRef<HTMLFormElement>(null);
+  const { setSearchQueryString, searchQueryString, searchResults } = useContext(AppContext);
 
   function handleChange(e: FormEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
     localStorage.setItem('searchQuery', value);
+    setSearchQueryString(value);
   }
 
   useEffect(() => {
-    if (searchInput.current) {
-      const searchQuery = localStorage.getItem('searchQuery') ?? '';
-      searchInput.current.value = searchQuery;
-      props.search(searchQuery);
-    }
-  }, []);
+    const searchQuery = localStorage.getItem('searchQuery') ?? '';
 
-  useEffect(() => {
-    const instance = searchInput.current;
-    return () => {
-      if (instance) {
-        localStorage.setItem('searchQuery', instance?.value ?? '');
+    if (searchQuery !== searchQueryString || (searchQuery === '' && !searchResults.length)) {
+      if (props.setIsSearchClick) {
+        props.setIsSearchClick(true);
       }
-    };
+
+      setSearchQueryString(searchQuery);
+    }
   }, []);
 
   function handleSearch(e: FormEvent) {
     e.preventDefault();
-    if (searchInput.current?.value) {
-      props.search(searchInput.current.value);
+    if (props.setIsSearchClick) {
+      props.setIsSearchClick(true);
     }
   }
 
   return (
-    <form className={styles.search} data-testid="search" ref={searchForm} onSubmit={handleSearch}>
+    <form className={styles.search} data-testid="search" onSubmit={handleSearch}>
       <input
         className={styles.search__input}
         data-testid="search-input"
         placeholder="Search..."
         type="search"
-        ref={searchInput}
+        value={searchQueryString}
         onChange={handleChange}
       />
       <button type="submit" className={styles.search__button} data-testid="search-button">
