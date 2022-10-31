@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Form from './Form';
 import userEvent from '@testing-library/user-event';
 import FormPage from 'pages/FormPage';
@@ -33,9 +33,7 @@ describe('Form', () => {
       userEvent.type(input, 'q');
       userEvent.click(submit);
 
-      await setTimeout(() => {
-        expect(screen.getByText(/Name should be more than 1 letters/i)).toBeInTheDocument();
-      }, 0);
+      expect(await screen.findByText(/Name should be more than 1 letters/i)).toBeInTheDocument();
     });
 
     it('name should contain only alphabets', async () => {
@@ -46,9 +44,7 @@ describe('Form', () => {
       userEvent.type(input, '111');
       userEvent.click(submit);
 
-      await setTimeout(() => {
-        expect(screen.getByText(/Name should contain only alphabets/i)).toBeInTheDocument();
-      }, 0);
+      expect(await screen.findByText(/Name should contain only alphabets/i)).toBeInTheDocument();
     });
   });
 
