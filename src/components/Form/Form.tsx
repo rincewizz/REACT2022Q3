@@ -1,12 +1,14 @@
 import ButtonControl from 'components/ButtonControl/ButtonControl';
 import InputControl from 'components/InputControl/InputControl';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Form.module.scss';
 import { FormProp } from './types';
 import { useForm, FieldValues } from 'react-hook-form';
 import SwitcherControl from 'components/SwitcherControl/SwitcherControl';
 import Notification from '../Notification/Notification';
 import SelectControl from 'components/SelectControl/SelectControl';
+import { AppContext } from 'appState/appContext';
+import { FormFields } from 'appState/types';
 
 export default function Form(props: FormProp) {
   const {
@@ -14,10 +16,13 @@ export default function Form(props: FormProp) {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: { errors, isDirty, isValid, isSubmitted, isSubmitSuccessful },
   } = useForm({ mode: 'onSubmit', reValidateMode: 'onChange' });
 
   const [isShowMessage, setIsShowMessage] = useState(false);
+
+  const { setFormFields, formFields } = useContext(AppContext);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -27,6 +32,16 @@ export default function Form(props: FormProp) {
       setTimeout(() => setIsShowMessage(false), 2000);
     }
   }, [isSubmitSuccessful]);
+
+  useEffect(() => {
+    if (formFields) {
+      Object.entries(formFields).forEach(([key, value]) => {
+        setValue(key, value);
+      });
+    }
+
+    return () => setFormFields(getValues() as FormFields);
+  }, []);
 
   const handleSuccess = (data: FieldValues) => {
     props.createCard({
