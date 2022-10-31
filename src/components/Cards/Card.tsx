@@ -1,6 +1,7 @@
 import React from 'react';
 import { ICard } from './types';
 import styles from './Cards.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 export default function Card(props: ICard) {
   const {
@@ -21,7 +22,10 @@ export default function Card(props: ICard) {
     realm,
     spouse,
     wikiUrl,
+    _id,
   } = props;
+
+  const navigate = useNavigate();
 
   const modalContent = (
     <>
@@ -64,6 +68,8 @@ export default function Card(props: ICard) {
   function handleClick() {
     if (props.openModal) {
       props.openModal(modalContent);
+    } else {
+      navigate(`/character/${_id}`);
     }
   }
 
