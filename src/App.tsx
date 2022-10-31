@@ -8,6 +8,8 @@ import Header from 'layouts/Header';
 import Footer from 'layouts/Footer';
 import FormPage from 'pages/FormPage';
 import { Modal } from 'components/Modal/Modal';
+import { AppProvider } from 'appState/appContext';
+import Character from 'pages/Character';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +24,7 @@ function App() {
   }
 
   return (
-    <>
+    <AppProvider>
       <Header />
       <main className="main">
         <Routes>
@@ -34,7 +36,7 @@ function App() {
       </main>
       <Footer />
       {isModalOpen && <Modal close={closeModal}>{modalContent}</Modal>}
-    </>
+    </AppProvider>
   );
 }
 
