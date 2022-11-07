@@ -1,13 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Pagination.module.scss';
-import { AppContext } from 'appState/appContext';
 import { Link } from 'react-router-dom';
 import { PaginationProps } from './types';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectHome, setPageNumber, setPageLimit } from 'app/homeSlice';
 
 export function Pagination(props: PaginationProps) {
-  const { setPage, setPageLimit, pageLimit } = useContext(AppContext);
   const { pageCount, current } = props;
   const [pagesArray, setPagesArray] = useState<string[]>([]);
+
+  const { pageLimit } = useSelector(selectHome);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setPagesArray(generatePagesArray());
@@ -56,14 +59,14 @@ export function Pagination(props: PaginationProps) {
 
   function clickHandle(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: number) {
     e.preventDefault();
-    setPage(value);
+    dispatch(setPageNumber(value));
     props.setIsPageClick(true);
   }
 
   function onchangeLimitHandle(e: React.ChangeEvent<HTMLSelectElement>) {
     props.setIsPageClick(true);
-    setPageLimit(Number(e.target.value));
-    setPage(1);
+    dispatch(setPageLimit(Number(e.target.value)));
+    dispatch(setPageNumber(1));
   }
 
   return (

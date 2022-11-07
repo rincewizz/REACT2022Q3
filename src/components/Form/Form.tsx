@@ -1,14 +1,15 @@
 import ButtonControl from 'components/ButtonControl/ButtonControl';
 import InputControl from 'components/InputControl/InputControl';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Form.module.scss';
 import { FormProp } from './types';
 import { useForm, FieldValues } from 'react-hook-form';
 import SwitcherControl from 'components/SwitcherControl/SwitcherControl';
 import Notification from '../Notification/Notification';
 import SelectControl from 'components/SelectControl/SelectControl';
-import { AppContext } from 'appState/appContext';
-import { FormFields } from 'appState/types';
+import { FormFields } from 'app/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectForm, setFormFields } from 'app/formSlice';
 
 export default function Form(props: FormProp) {
   const {
@@ -22,7 +23,8 @@ export default function Form(props: FormProp) {
 
   const [isShowMessage, setIsShowMessage] = useState(false);
 
-  const { setFormFields, formFields } = useContext(AppContext);
+  const { formFields } = useSelector(selectForm);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -36,11 +38,18 @@ export default function Form(props: FormProp) {
   useEffect(() => {
     if (formFields) {
       Object.entries(formFields).forEach(([key, value]) => {
-        setValue(key, value);
+        if (key !== 'file') {
+          setValue(key, value);
+        }
       });
     }
 
-    return () => setFormFields(getValues() as FormFields);
+    return () => {
+      (async () => {
+        const formFieldsData = { ...getValues(), file: {} };
+        dispatch(setFormFields(formFieldsData as FormFields));
+      })();
+    };
   }, []);
 
   const handleSuccess = (data: FieldValues) => {

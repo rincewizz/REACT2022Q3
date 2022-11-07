@@ -1,4 +1,4 @@
-import { SortType } from 'appState/types';
+import { SortType } from 'app/types';
 
 export type SortProps = {
   sortList: SortType[];

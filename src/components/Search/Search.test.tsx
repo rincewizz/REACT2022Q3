@@ -1,25 +1,35 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Search from './Search';
-import MainPage from 'pages/MainPage';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { LocalStorageMock } from 'tests/utils/localStorageMock';
-import { AppProvider } from 'appState/appContext';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from 'app/store';
 
 describe('Search', () => {
-  const searchMock = jest.fn();
-
   it('should render the search', () => {
-    render(<MainPage />);
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Search />
+        </Provider>
+      </BrowserRouter>
+    );
     const search = screen.getByPlaceholderText('Search...');
 
     expect(search).toBeInTheDocument();
   });
 
   it('should render input value empty if Local storage empty', () => {
-    render(<Search search={searchMock} />);
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Search />
+        </Provider>
+      </BrowserRouter>
+    );
 
     expect(screen.getByDisplayValue('')).toBeInTheDocument();
   });
@@ -28,9 +38,9 @@ describe('Search', () => {
     localStorage = new LocalStorageMock();
     const { rerender } = render(
       <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
+        <Provider store={store}>
+          <Search />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -38,9 +48,9 @@ describe('Search', () => {
 
     rerender(
       <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
+        <Provider store={store}>
+          <Search />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -51,9 +61,9 @@ describe('Search', () => {
     localStorage = new LocalStorageMock();
     const { rerender } = render(
       <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
+        <Provider store={store}>
+          <Search />
+        </Provider>
       </BrowserRouter>
     );
     const search = screen.getByTestId('search');
@@ -62,9 +72,9 @@ describe('Search', () => {
 
     rerender(
       <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
+        <Provider store={store}>
+          <Search />
+        </Provider>
       </BrowserRouter>
     );
 

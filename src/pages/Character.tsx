@@ -1,6 +1,7 @@
-import { AppContext } from 'appState/appContext';
+import { selectHome } from 'app/homeSlice';
 import { ICard } from 'components/Cards/types';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { PageProps } from 'types/types';
 
@@ -8,7 +9,7 @@ export default function AboutPage(props: PageProps) {
   useEffect(() => {
     document.title = props.title ?? '';
   });
-  const { searchResults } = useContext(AppContext);
+  const { searchResults } = useSelector(selectHome);
   const { characterId } = useParams();
   const [character, setCharacter] = useState<ICard>({});
   const navigate = useNavigate();

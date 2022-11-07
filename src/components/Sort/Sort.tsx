@@ -1,22 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Sort.module.scss';
-import { AppContext } from 'appState/appContext';
-import { SortType } from 'appState/types';
+import { SortType } from 'app/types';
 import { SortProps } from './types';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectHome, setSortType, setSortOrder } from 'app/homeSlice';
 
 export function Sort(props: SortProps) {
-  const { setSortType, sortType, setSortOrder, sortOrder } = useContext(AppContext);
+  const { sortType, sortOrder } = useSelector(selectHome);
+  const dispatch = useDispatch();
 
   const [currentSortClass, setCurrentSortClass] = useState('');
 
   function clickHandle(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: SortType) {
     e.preventDefault();
     if (value === sortType) {
-      setSortOrder(sortOrder !== 'asc' ? 'asc' : 'desc');
+      dispatch(setSortOrder(sortOrder !== 'asc' ? 'asc' : 'desc'));
     } else {
-      setSortOrder('asc');
+      dispatch(setSortOrder('asc'));
     }
-    setSortType(value);
+    dispatch(setSortType(value));
     props.setIsSortClick(true);
   }
 

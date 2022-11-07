@@ -1,12 +1,12 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import MainPage from 'pages/MainPage';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { getMockFetch } from 'tests/utils/mockFetch';
-import App from 'App';
 import { BrowserRouter } from 'react-router-dom';
-import { AppProvider } from 'appState/appContext';
+import { Provider } from 'react-redux';
+import { store } from 'app/store';
 
 const API_RESPONSE_MOCK = {
   docs: [
@@ -75,9 +75,9 @@ describe('Main page', () => {
     window.fetch = getMockFetch({ data: API_RESPONSE_MOCK });
     render(
       <BrowserRouter>
-        <AppProvider>
+        <Provider store={store}>
           <MainPage />
-        </AppProvider>
+        </Provider>
       </BrowserRouter>
     );
     const search = screen.getByTestId('search-input');
@@ -94,9 +94,9 @@ describe('Main page', () => {
 
     render(
       <BrowserRouter>
-        <AppProvider>
+        <Provider store={store}>
           <MainPage />
-        </AppProvider>
+        </Provider>
       </BrowserRouter>
     );
     const search = screen.getByTestId('search-input');
@@ -113,9 +113,9 @@ describe('Main page', () => {
 
     render(
       <BrowserRouter>
-        <AppProvider>
+        <Provider store={store}>
           <MainPage />
-        </AppProvider>
+        </Provider>
       </BrowserRouter>
     );
     const search = screen.getByTestId('search-input');

@@ -8,7 +8,8 @@ import Header from 'layouts/Header';
 import Footer from 'layouts/Footer';
 import FormPage from 'pages/FormPage';
 import { Modal } from 'components/Modal/Modal';
-import { AppProvider } from 'appState/appContext';
+import { Provider } from 'react-redux';
+import { store } from 'app/store';
 import Character from 'pages/Character';
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
   }
 
   return (
-    <AppProvider>
+    <Provider store={store}>
       <Header />
       <main className="main">
         <Routes>
@@ -37,7 +38,7 @@ function App() {
       </main>
       <Footer />
       {isModalOpen && <Modal close={closeModal}>{modalContent}</Modal>}
-    </AppProvider>
+    </Provider>
   );
 }
 

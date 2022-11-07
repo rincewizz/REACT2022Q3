@@ -1,15 +1,17 @@
-import React, { FormEvent, useContext, useEffect } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import { SearchProps } from './types';
 import styles from './Search.module.scss';
-import { AppContext } from 'appState/appContext';
+import { selectHome, setSearchQueryString } from 'app/homeSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Search(props: SearchProps) {
-  const { setSearchQueryString, searchQueryString, searchResults } = useContext(AppContext);
+  const { searchQueryString, searchResults } = useSelector(selectHome);
+  const dispatch = useDispatch();
 
   function handleChange(e: FormEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
     localStorage.setItem('searchQuery', value);
-    setSearchQueryString(value);
+    dispatch(setSearchQueryString(value));
   }
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function Search(props: SearchProps) {
         props.setIsSearchClick(true);
       }
 
-      setSearchQueryString(searchQuery);
+      dispatch(setSearchQueryString(searchQuery));
     }
   }, []);
 

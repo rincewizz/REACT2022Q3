@@ -1,19 +1,21 @@
-import { AppContext } from 'appState/appContext';
+import { selectForm, setFormCards } from 'app/formSlice';
 import CardsList from 'components/Cards/CardsList';
 import { ICard } from 'components/Cards/types';
 import Form from 'components/Form/Form';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PageProps } from 'types/types';
 
 export default function FormPage(props: PageProps) {
-  const { setFormCards, formCards } = useContext(AppContext);
+  const { formCards } = useSelector(selectForm);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.title = props.title ?? '';
   });
 
   function createCard(card: ICard) {
-    setFormCards(formCards.concat([card]));
+    dispatch(setFormCards(formCards.concat([card])));
   }
 
   return (
