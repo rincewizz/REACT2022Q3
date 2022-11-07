@@ -28,17 +28,4 @@ describe('Card', () => {
 
     expect(image).toBeInTheDocument();
   });
-  it('should render the Card title', () => {
-    render(<Card {...cards[0]} />);
-    const title = screen.getByTestId('card-title');
-
-    expect(title).toBeInTheDocument();
-  });
-
-  it('should render the Card description', () => {
-    render(<Card {...cards[0]} />);
-    const description = screen.getByTestId('card-description');
-
-    expect(description).toBeInTheDocument();
-  });
 });

@@ -1,4 +1,5 @@
 export interface ICard {
+  type?: 'home' | 'form';
   id?: number | string;
   _id?: string;
   img?: string;

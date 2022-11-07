@@ -15,14 +15,18 @@ export default function MainPage(props: PageProps) {
 
   useEffect(() => {
     document.title = props.title ?? '';
-  });
+  }, []);
 
   async function search(name: string) {
     setIsLoading(true);
 
     try {
       const cards = await theOneApi.getCharacters({ limit: '10', name });
-      setCards(cards.docs);
+      setCards(
+        cards.docs.map((el) => {
+          return { ...el, type: 'home' };
+        })
+      );
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

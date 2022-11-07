@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useRef } from 'react';
 import { SearchProps } from './types';
 import styles from './Search.module.scss';
 
-export default function Search(props: SearchProps) {
+export default function Search({ search }: SearchProps) {
   const searchInput = useRef<HTMLInputElement>(null);
   const searchForm = useRef<HTMLFormElement>(null);
 
@@ -15,7 +15,7 @@ export default function Search(props: SearchProps) {
     if (searchInput.current) {
       const searchQuery = localStorage.getItem('searchQuery') ?? '';
       searchInput.current.value = searchQuery;
-      props.search(searchQuery);
+      search(searchQuery);
     }
   }, []);
 
@@ -31,7 +31,7 @@ export default function Search(props: SearchProps) {
   function handleSearch(e: FormEvent) {
     e.preventDefault();
     if (searchInput.current?.value) {
-      props.search(searchInput.current.value);
+      search(searchInput.current.value);
     }
   }
 
