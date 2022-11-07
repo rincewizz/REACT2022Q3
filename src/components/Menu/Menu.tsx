@@ -3,28 +3,31 @@ import { NavLink } from 'react-router-dom';
 import { MenuProp } from './types';
 import styles from './Menu.module.scss';
 
-export default function Menu(props: MenuProp = { className: '' }) {
-  function navigationCssClasses(navigationData: { isActive: boolean }) {
-    return `${styles.menu__link} ${navigationData.isActive ? styles['menu__link--active'] : ''}`;
-  }
+function navigationCssClasses(navigationData: { isActive: boolean }) {
+  return `${styles.menu__link} ${navigationData.isActive ? styles['menu__link--active'] : ''}`;
+}
 
+const linkList = [
+  { name: 'Home', path: '/', testid: 'home-link' },
+  { name: 'Form', path: '/form', testid: 'form-link' },
+  { name: 'About us', path: '/about', testid: 'about-link' },
+];
+
+export default function Menu({ className }: MenuProp = { className: '' }) {
   return (
-    <ul className={`${styles.menu} ${props.className}`}>
-      <li className={styles.menu__item}>
-        <NavLink data-testid="home-link" end className={navigationCssClasses} to="/">
-          Home
-        </NavLink>
-      </li>
-      <li className={styles.menu__item}>
-        <NavLink data-testid="form-link" className={navigationCssClasses} to="/form">
-          Form
-        </NavLink>
-      </li>
-      <li className={styles.menu__item}>
-        <NavLink data-testid="about-link" className={navigationCssClasses} to="/about">
-          About us
-        </NavLink>
-      </li>
+    <ul className={`${styles.menu} ${className}`}>
+      {linkList.map((el) => (
+        <li className={styles.menu__item} key={el.path}>
+          <NavLink
+            data-testid={el.testid}
+            end={el.path === '/'}
+            className={navigationCssClasses}
+            to={el.path}
+          >
+            {el.name}
+          </NavLink>
+        </li>
+      ))}
     </ul>
   );
 }

@@ -3,7 +3,7 @@ import { SearchProps } from './types';
 import styles from './Search.module.scss';
 import { AppContext } from 'appState/appContext';
 
-export default function Search(props: SearchProps) {
+export default function Search({ setIsSearchClick }: SearchProps) {
   const { setSearchQueryString, searchQueryString, searchResults } = useContext(AppContext);
 
   function handleChange(e: FormEvent<HTMLInputElement>) {
@@ -16,8 +16,8 @@ export default function Search(props: SearchProps) {
     const searchQuery = localStorage.getItem('searchQuery') ?? '';
 
     if (searchQuery !== searchQueryString || (searchQuery === '' && !searchResults.length)) {
-      if (props.setIsSearchClick) {
-        props.setIsSearchClick(true);
+      if (setIsSearchClick) {
+        setIsSearchClick(true);
       }
 
       setSearchQueryString(searchQuery);
@@ -26,8 +26,8 @@ export default function Search(props: SearchProps) {
 
   function handleSearch(e: FormEvent) {
     e.preventDefault();
-    if (props.setIsSearchClick) {
-      props.setIsSearchClick(true);
+    if (setIsSearchClick) {
+      setIsSearchClick(true);
     }
   }
 

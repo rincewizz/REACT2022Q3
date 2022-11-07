@@ -5,11 +5,11 @@ import Form from 'components/Form/Form';
 import React, { useContext, useEffect } from 'react';
 import { PageProps } from 'types/types';
 
-export default function FormPage(props: PageProps) {
+export default function FormPage({ title }: PageProps) {
   const { setFormCards, formCards } = useContext(AppContext);
 
   useEffect(() => {
-    document.title = props.title ?? '';
+    document.title = title ?? '';
   });
 
   function createCard(card: ICard) {

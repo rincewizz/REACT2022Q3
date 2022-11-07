@@ -10,7 +10,7 @@ import { theOneApi } from 'services/theOneApi';
 import { PageProps } from 'types/types';
 import placeholder from '../assets/img/lord.jpg';
 
-export default function MainPage(props: PageProps) {
+export default function MainPage({ title }: PageProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isSortClick, setIsSortClick] = useState(false);
@@ -30,8 +30,8 @@ export default function MainPage(props: PageProps) {
   } = useContext(AppContext);
 
   useEffect(() => {
-    document.title = props.title ?? '';
-  });
+    document.title = title ?? '';
+  }, []);
 
   useEffect(() => {
     if (isSortClick || isPageClick || isSearchClick) {
@@ -61,7 +61,11 @@ export default function MainPage(props: PageProps) {
         page: String(options?.page || 1),
       });
 
-      setSearchCards(cards.docs);
+      setSearchCards(
+        cards.docs.map((el) => {
+          return { ...el, type: 'home' };
+        })
+      );
       setPageCount(cards.pages);
     } catch (error) {
       if (error instanceof Error) {

@@ -3,20 +3,14 @@ import { CardListProp } from './types';
 import Card from './Card';
 import Notification from 'components/Notification/Notification';
 import styles from './Cards.module.scss';
-import { v4 as uuidv4 } from 'uuid';
 
-export default function CardsList(props: CardListProp) {
+export default function CardsList({ cards, placeholder, openModal }: CardListProp) {
   return (
     <>
-      {props.cards.length ? (
+      {cards.length ? (
         <div className={styles.cards} data-testid="cards-list">
-          {props.cards.map((card) => (
-            <Card
-              key={card.id || card._id || uuidv4()}
-              img={props.placeholder}
-              {...card}
-              openModal={props.openModal}
-            />
+          {cards.map((card) => (
+            <Card key={card.id || card._id} img={placeholder} {...card} openModal={openModal} />
           ))}
         </div>
       ) : (

@@ -41,25 +41,4 @@ describe('Card', () => {
 
     expect(image).toBeInTheDocument();
   });
-  it('should render the Card title', () => {
-    render(
-      <BrowserRouter>
-        <Card {...cards[0]} />
-      </BrowserRouter>
-    );
-    const title = screen.getByTestId('card-title');
-
-    expect(title).toBeInTheDocument();
-  });
-
-  it('should render the Card description', () => {
-    render(
-      <BrowserRouter>
-        <Card {...cards[0]} />
-      </BrowserRouter>
-    );
-    const description = screen.getByTestId('card-description');
-
-    expect(description).toBeInTheDocument();
-  });
 });

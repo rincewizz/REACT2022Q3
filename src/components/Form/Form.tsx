@@ -9,8 +9,38 @@ import Notification from '../Notification/Notification';
 import SelectControl from 'components/SelectControl/SelectControl';
 import { AppContext } from 'appState/appContext';
 import { FormFields } from 'appState/types';
+import { v4 as uuidv4 } from 'uuid';
 
-export default function Form(props: FormProp) {
+const validationOptions = {
+  name: {
+    required: 'Name is required',
+    minLength: {
+      value: 2,
+      message: 'Name should be more than 1 letters',
+    },
+    pattern: {
+      value: /^[a-zA-Zа-яА-ЯЁ]+$/,
+      message: 'Name should contain only alphabets',
+    },
+  },
+  date: {
+    required: 'Date is required',
+  },
+  country: {
+    required: 'County is required',
+  },
+  agree: {
+    required: 'You should agree',
+  },
+  file: {
+    required: 'You should choose image',
+  },
+  receiveNotifications: {
+    required: 'You should choose answer',
+  },
+};
+
+export default function Form({ createCard }: FormProp) {
   const {
     register,
     handleSubmit,
@@ -43,44 +73,24 @@ export default function Form(props: FormProp) {
     return () => setFormFields(getValues() as FormFields);
   }, []);
 
-  const handleSuccess = (data: FieldValues) => {
-    props.createCard({
-      name: data.name,
-      date: data.date,
-      agree: data.agree ? 'on' : 'off',
-      receiveNotifications: data.receiveNotifications,
-      country: data.country,
-      img: URL.createObjectURL(data.file[0]),
+  const handleSuccess = ({
+    name,
+    date,
+    agree,
+    receiveNotifications,
+    country,
+    file,
+  }: FieldValues) => {
+    createCard({
+      type: 'form',
+      id: uuidv4(),
+      name,
+      date,
+      agree: agree ? 'on' : 'off',
+      receiveNotifications,
+      country,
+      img: URL.createObjectURL(file[0]),
     });
-  };
-
-  const validationOptions = {
-    name: {
-      required: 'Name is required',
-      minLength: {
-        value: 2,
-        message: 'Name should be more than 1 letters',
-      },
-      pattern: {
-        value: /^[a-zA-Zа-яА-ЯЁ]+$/,
-        message: 'Name should contain only alphabets',
-      },
-    },
-    date: {
-      required: 'Date is required',
-    },
-    country: {
-      required: 'County is required',
-    },
-    agree: {
-      required: 'You should agree',
-    },
-    file: {
-      required: 'You should choose image',
-    },
-    receiveNotifications: {
-      required: 'You should choose answer',
-    },
   };
 
   return (
