@@ -6,13 +6,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PageProps } from 'types/types';
 
-export default function FormPage(props: PageProps) {
+export default function FormPage({ title }: PageProps) {
   const { formCards } = useSelector(selectForm);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    document.title = props.title ?? '';
-  });
+    document.title = title ?? '';
+  }, []);
 
   function createCard(card: ICard) {
     dispatch(setFormCards(formCards.concat([card])));

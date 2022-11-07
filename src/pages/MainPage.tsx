@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PageProps } from 'types/types';
 import placeholder from '../assets/img/lord.jpg';
 
-export default function MainPage(props: PageProps) {
+export default function MainPage({ title }: PageProps) {
   const [isSortClick, setIsSortClick] = useState(false);
   const [isPageClick, setIsPageClick] = useState(false);
   const [isSearchClick, setIsSearchClick] = useState(false);
@@ -31,8 +31,8 @@ export default function MainPage(props: PageProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    document.title = props.title ?? '';
-  });
+    document.title = title ?? '';
+  }, []);
 
   useEffect(() => {
     if (isSortClick || isPageClick || isSearchClick) {

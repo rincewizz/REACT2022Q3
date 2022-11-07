@@ -1,14 +1,13 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import Form from './Form';
 import userEvent from '@testing-library/user-event';
 import FormPage from 'pages/FormPage';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
 import { store } from 'app/store';
 import { AnyAction, combineReducers, createStore, Store } from '@reduxjs/toolkit';
 import formSlice from 'app/formSlice';
-import { BrowserRouter } from 'react-router-dom';
+import { renderRouterProvider } from 'tests/utils/renderRouterProvider';
 
 export function createTestStore() {
   const store = createStore(
@@ -27,11 +26,7 @@ describe('Form', () => {
 
   it('should render the Form', () => {
     const createCardMock = jest.fn();
-    render(
-      <Provider store={testStore}>
-        <Form createCard={createCardMock} />
-      </Provider>
-    );
+    renderRouterProvider(<Form createCard={createCardMock} />, {}, testStore);
     const form = screen.getByTestId('form');
 
     expect(form).toBeInTheDocument();
@@ -39,11 +34,7 @@ describe('Form', () => {
 
   it('should disable button on start', () => {
     const createCardMock = jest.fn();
-    render(
-      <Provider store={testStore}>
-        <Form createCard={createCardMock} />
-      </Provider>
-    );
+    renderRouterProvider(<Form createCard={createCardMock} />, {}, testStore);
     const submit = screen.getByTestId('submit');
     expect(submit).toBeDisabled();
 
@@ -55,11 +46,7 @@ describe('Form', () => {
 
   describe('should show validation message', () => {
     it('name should be more than 1 letter', async () => {
-      render(
-        <Provider store={testStore}>
-          <FormPage />
-        </Provider>
-      );
+      renderRouterProvider(<FormPage />, {}, testStore);
       const submit = screen.getByTestId('submit');
       const input = screen.getByTestId('input-name');
 
@@ -70,11 +57,7 @@ describe('Form', () => {
     });
 
     it('name should contain only alphabets', async () => {
-      render(
-        <Provider store={testStore}>
-          <FormPage />
-        </Provider>
-      );
+      renderRouterProvider(<FormPage />, {}, testStore);
       const submit = screen.getByTestId('submit');
       const input = screen.getByTestId('input-name');
 
@@ -87,14 +70,9 @@ describe('Form', () => {
 
   it('create card after form send', async () => {
     window.URL.createObjectURL = jest.fn();
-    render(
-      <Provider store={store}>
-        <BrowserRouter>
-          <FormPage />
-        </BrowserRouter>
-      </Provider>
-    );
     const testImageFile = new File(['hello'], 'hello.png', { type: 'image/png' });
+
+    renderRouterProvider(<FormPage />, {}, store);
 
     const submit = screen.getByTestId('submit');
     const inputName = screen.getByTestId('input-name');

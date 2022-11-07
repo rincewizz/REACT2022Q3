@@ -4,7 +4,7 @@ import styles from './Search.module.scss';
 import { selectHome, setSearchQueryString } from 'app/homeSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function Search(props: SearchProps) {
+export default function Search({ setIsSearchClick }: SearchProps) {
   const { searchQueryString, searchResults } = useSelector(selectHome);
   const dispatch = useDispatch();
 
@@ -18,8 +18,8 @@ export default function Search(props: SearchProps) {
     const searchQuery = localStorage.getItem('searchQuery') ?? '';
 
     if (searchQuery !== searchQueryString || (searchQuery === '' && !searchResults.length)) {
-      if (props.setIsSearchClick) {
-        props.setIsSearchClick(true);
+      if (setIsSearchClick) {
+        setIsSearchClick(true);
       }
 
       dispatch(setSearchQueryString(searchQuery));
@@ -28,8 +28,8 @@ export default function Search(props: SearchProps) {
 
   function handleSearch(e: FormEvent) {
     e.preventDefault();
-    if (props.setIsSearchClick) {
-      props.setIsSearchClick(true);
+    if (setIsSearchClick) {
+      setIsSearchClick(true);
     }
   }
 

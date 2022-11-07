@@ -4,7 +4,7 @@ import { PageProps } from 'types/types';
 export default function AboutPage(props: PageProps) {
   useEffect(() => {
     document.title = props.title ?? '';
-  });
+  }, []);
 
   return (
     <div className="container">
