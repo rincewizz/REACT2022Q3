@@ -4,9 +4,7 @@ import MainPage from 'pages/MainPage';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { getMockFetch } from 'tests/utils/mockFetch';
-import App from 'App';
-import { BrowserRouter } from 'react-router-dom';
-import { AppProvider } from 'appState/appContext';
+import { renderRouterProvider } from 'tests/utils/renderRouterProvider';
 
 const API_RESPONSE_MOCK = {
   docs: [
@@ -73,13 +71,7 @@ const API_RESPONSE_MOCK = {
 describe('Main page', () => {
   it('should find and show card', async () => {
     window.fetch = getMockFetch({ data: API_RESPONSE_MOCK });
-    render(
-      <BrowserRouter>
-        <AppProvider>
-          <MainPage />
-        </AppProvider>
-      </BrowserRouter>
-    );
+    renderRouterProvider(<MainPage />);
     const search = screen.getByTestId('search-input');
     const button = screen.getByTestId('search-button');
 
@@ -92,13 +84,7 @@ describe('Main page', () => {
   it('should show message if not found', async () => {
     window.fetch = getMockFetch({ data: { docs: [] } });
 
-    render(
-      <BrowserRouter>
-        <AppProvider>
-          <MainPage />
-        </AppProvider>
-      </BrowserRouter>
-    );
+    renderRouterProvider(<MainPage />);
     const search = screen.getByTestId('search-input');
     const button = screen.getByTestId('search-button');
 
@@ -111,13 +97,7 @@ describe('Main page', () => {
   it('should show loader', async () => {
     window.fetch = getMockFetch({ data: API_RESPONSE_MOCK });
 
-    render(
-      <BrowserRouter>
-        <AppProvider>
-          <MainPage />
-        </AppProvider>
-      </BrowserRouter>
-    );
+    renderRouterProvider(<MainPage />);
     const search = screen.getByTestId('search-input');
     const button = screen.getByTestId('search-button');
 

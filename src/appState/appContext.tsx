@@ -83,22 +83,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
-  return (
-    <AppContext.Provider
-      value={{
-        ...state,
-        setSearchCards,
-        setSortType,
-        setSortOrder,
-        setSearchQueryString,
-        setPage,
-        setPageCount,
-        setPageLimit,
-        setFormCards,
-        setFormFields,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
-  );
+  const providerValue = {
+    ...state,
+    setSearchCards,
+    setSortType,
+    setSortOrder,
+    setSearchQueryString,
+    setPage,
+    setPageCount,
+    setPageLimit,
+    setFormCards,
+    setFormFields,
+  };
+
+  return <AppContext.Provider value={providerValue}>{children}</AppContext.Provider>;
 }

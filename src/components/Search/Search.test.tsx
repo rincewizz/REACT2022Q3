@@ -5,8 +5,7 @@ import MainPage from 'pages/MainPage';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { LocalStorageMock } from 'tests/utils/localStorageMock';
-import { AppProvider } from 'appState/appContext';
-import { BrowserRouter } from 'react-router-dom';
+import { renderRouterProvider } from 'tests/utils/renderRouterProvider';
 
 describe('Search', () => {
   const searchMock = jest.fn();
@@ -26,47 +25,23 @@ describe('Search', () => {
 
   it('should render input value if Local storage not empty', () => {
     localStorage = new LocalStorageMock();
-    const { rerender } = render(
-      <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
-      </BrowserRouter>
-    );
+    const { rerender } = renderRouterProvider(<Search search={searchMock} />);
 
     userEvent.type(screen.getByDisplayValue(''), 'text');
 
-    rerender(
-      <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
-      </BrowserRouter>
-    );
+    rerender(<Search search={searchMock} />);
 
     expect(screen.getByDisplayValue('text')).toBeInTheDocument();
   });
 
   it('should save input value after reload page', async () => {
     localStorage = new LocalStorageMock();
-    const { rerender } = render(
-      <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
-      </BrowserRouter>
-    );
+    const { rerender } = renderRouterProvider(<Search search={searchMock} />);
     const search = screen.getByTestId('search');
 
     userEvent.type(search, 'text');
 
-    rerender(
-      <BrowserRouter>
-        <AppProvider>
-          <Search search={searchMock} />
-        </AppProvider>
-      </BrowserRouter>
-    );
+    rerender(<Search search={searchMock} />);
 
     expect(await screen.findByDisplayValue('text')).toBeInTheDocument();
   });
